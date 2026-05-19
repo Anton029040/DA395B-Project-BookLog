@@ -1,7 +1,8 @@
-// API (external source) Book object
+// A book object returned from the API (fileds with ? are optional)
 export interface ApiBook {
     id: number;
     title: string;
+    subtitle?: string;
     image?: string;
     identifiers?: Identifiers;
     authors?: Author[];
