@@ -1,19 +1,26 @@
 import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
-// this is for the navigation bar ( our 3 tabs that navigate to new endpoints )
+/**
+ * Component for the navbar. Includes links to the different pages
+ */
 const Navbar = () => {
     return(
-        <nav>
-            <NavLink to="/">
-                Home
-            </NavLink>
+        <div className = "navbar">
+            <nav className = "links">
+                <NavLink to="/">
+                    Home
+                </NavLink>
 
-            <NavLink to="/tbr">
-                TBR
-            </NavLink>
+                <NavLink to="/tbr">
+                    TBR
+                </NavLink>
 
-            {/* other links need to be added, this is for testing purposes - Natalie */}
-        </nav>
+                <NavLink to="/read">
+                    Read
+                </NavLink>
+            </nav>
+        </div>
     );
 };
 
