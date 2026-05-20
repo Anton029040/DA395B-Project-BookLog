@@ -13,7 +13,7 @@ const SearchBar = () => {
     const [query, setQuery] = useState("");
 
     function handleSearch() {
-        if (!query) {
+        if (!query.trim()) {
             alert("THe searchfield is empty");
             return;
         }

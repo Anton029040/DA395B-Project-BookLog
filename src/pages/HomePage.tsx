@@ -13,7 +13,7 @@ const HomePage = () => {
                 console.log(result)
             })
         }
-    }, [query])
+    }, [query]);
 
     return(
         <main>
