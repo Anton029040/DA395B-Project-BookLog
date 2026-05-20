@@ -2,9 +2,24 @@ import "./SearchBar.css"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+
+/**
+ * Component for a searchbar. The search bar includes a searchfield for typing and 
+ * a button for submit. Can also sumbit via enter. The value of the searchfield is stored
+ * in the URI for global access.
+ */
 const SearchBar = () => {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
+
+    function handleSearch() {
+        if (!query) {
+            alert("THe searchfield is empty");
+            return;
+        }
+        navigate(`?search=${encodeURIComponent(query)}`);
+    }
+
 
     return (
         <div className = "input-group">
@@ -16,7 +31,7 @@ const SearchBar = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key == "Enter") {
-                        navigate(`?search=${encodeURIComponent(query)}`);
+                        handleSearch();
                     }
                 }}
             />
@@ -24,8 +39,7 @@ const SearchBar = () => {
             {/* Button containing the search icon. Search icon fetched from Bootstrap Icons*/}
             <button 
                 className="search-button"
-                onClick={() => {
-                navigate(`?search=${encodeURIComponent(query)}`)}}
+                onClick={handleSearch}
             >
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 

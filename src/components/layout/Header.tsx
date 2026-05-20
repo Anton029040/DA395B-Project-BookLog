@@ -1,6 +1,9 @@
 import SearchBar from "../ui/SearchBar";
 import "./Header.css";
 
+/**
+ * Component for the header. Includes both a log and a Searchbar
+ */
 const Header = () => {
     return(
         <div className = "header">

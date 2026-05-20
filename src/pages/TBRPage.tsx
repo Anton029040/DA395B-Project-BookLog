@@ -11,7 +11,7 @@ const TBRPage = () => {
             console.log(query);
             // todo Search for books that is in TBR list
         }
-    })
+    }, [query])
 
     return(
         <main>
