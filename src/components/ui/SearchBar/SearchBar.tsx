@@ -14,11 +14,11 @@ const SearchBar = () => {
 
     function handleSearch() {
         if (!query.trim()) {
-            alert("THe searchfield is empty");
+            alert("The searchfield is empty");
             return;
         }
-        navigate(`?search=${encodeURIComponent(query)}`);
-    }
+        navigate(`?search=${encodeURIComponent(query.trim())}`);
+    };
 
 
     return (
