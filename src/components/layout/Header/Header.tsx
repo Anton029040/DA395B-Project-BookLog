@@ -1,4 +1,5 @@
-import SearchBar from "../ui/SearchBar";
+import SearchBar from "../../ui/SearchBar/SearchBar";
+import siteLogo from "../../../assets/images/book-logo.svg"; // needs to be imported otherwise the filepath doesn't work
 import "./Header.css";
 
 /**
@@ -10,7 +11,7 @@ const Header = () => {
             <div className = "inner-header">
                 {/* Div that holds the elements for the logo*/}
                 <div className="logo-block">
-                    <img src="../../assets/book-logo.svg" className="logo"/>
+                    <img src={siteLogo} className="logo"/>
                     <h1 className="title">Booklog</h1>
                 </div>
 

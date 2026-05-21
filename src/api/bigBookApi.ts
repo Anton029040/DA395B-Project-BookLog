@@ -1,4 +1,4 @@
-import { SearchBookParams } from "src/types/SearchBookParams";
+import type { SearchBookParams } from "../types/SearchBookParams";  // this is a type(ts) not a js runtime value hence "type"
 
 const API_KEY = import.meta.env.VITE_BIG_BOOK_API_KEY;  // api key from .env
 const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
@@ -77,17 +77,3 @@ export const searchBooks = async (params: SearchBookParams) => {
 
     return response.json();
 };
-
-export async function getBooks(query: string) { // todo Remove this function and make searchbar use the function above
-    const url = new URL(`${BASE_URL}/search-books`);
-    url.searchParams.append("query", query);
-    url.searchParams.append("api-key", API_KEY);
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch books");
-    }
-
-    return await response.json();
-}

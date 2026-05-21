@@ -1,7 +1,7 @@
 // This is the page connected to the endpoint "/"
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getBooks } from "../api/bigBookApi";
+import { searchBooks } from "../api/bigBookApi";
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
@@ -9,7 +9,7 @@ const HomePage = () => {
 
     useEffect(() => {
         if(query) {
-            getBooks(query).then((result) => {
+            searchBooks(query).then((result) => {
                 console.log(result)
             })
         }
