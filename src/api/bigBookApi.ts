@@ -77,3 +77,17 @@ export const searchBooks = async (params: SearchBookParams) => {
 
     return response.json();
 };
+
+export async function getBooks(query: string) { // todo Remove this function and make searchbar use the function above
+    const url = new URL(`${BASE_URL}/search-books`);
+    url.searchParams.append("query", query);
+    url.searchParams.append("api-key", API_KEY);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch books");
+    }
+
+    return await response.json();
+}
