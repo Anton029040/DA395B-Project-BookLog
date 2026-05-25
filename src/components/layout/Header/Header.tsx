@@ -12,7 +12,7 @@ const Header = () => {
                 {/* Div that holds the elements for the logo*/}
                 <div className="logo-block">
                     <img src={siteLogo} className="logo"/>
-                    <h1 className="title">Booklog</h1>
+                    <h1 className="title">BookLog</h1>
                 </div>
 
                 {/* Div that holds the searchbar*/}
