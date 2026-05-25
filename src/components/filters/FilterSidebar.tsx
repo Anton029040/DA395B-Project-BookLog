@@ -59,7 +59,7 @@ interface FilterSidebarProps{
         const ratings = [1, 2, 3, 4, 5];
 
         return (
-            <aside>                                     {/* used for sidebars/secondary content */}
+            <aside>                           {/* used for sidebars/secondary content */}
                 <h2>Search Filters</h2>
                 <Accordion alwaysOpen>        {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
@@ -67,15 +67,15 @@ interface FilterSidebarProps{
                                 Authors filter section
                         ===================================== */}
                     <Accordion.Item eventKey="0">
-                        <Accordion.Header>Authors</Accordion.Header>
-                        <Accordion.Body>
-                            {availableAuthors.map((author) => (
-                                <Form.Check
-                                    key = {author}
-                                    type = "checkbox"
-                                    label = {author}
-                                    checked = {selectedAuthors.includes(author)}
-                                    onChange = {() => toggleAuthor(author)}
+                        <Accordion.Header>Authors</Accordion.Header>                {/* clickable accordian title (expand/collapse) */}
+                        <Accordion.Body>                                            {/* content inside the accordian */}
+                            {availableAuthors.map((author) => (                     
+                                <Form.Check                                         
+                                    key = {author}                                  
+                                    type = "checkbox"                               
+                                    label = {author}                                
+                                    checked = {selectedAuthors.includes(author)}   
+                                    onChange = {() => toggleAuthor(author)}        
                                 />
                             ))}
                         </Accordion.Body>
