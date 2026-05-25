@@ -100,7 +100,8 @@ const HomePage = () => {
                 earliestPublishYear: selectedEarliestPublishYear,                       // selected earliest publish year
                 latestPublishYear: selectedLatestPublishYear,                           // selected latest publish year
 
-                // add sort stuff here
+                sort: "rating",
+                sortDirection: "DESC",
 
                 number: 10,                                                             // pagination: show 10 books at a time
                 offset: 0,                                                              // pagination: start from first result

@@ -1,5 +1,7 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
+import { sortAuthorsBySurname } from "../../utils/filterBooks";
+
 /*  Defining the shape and types of ALL the props received by this component:
     - this helps typescript understand what data and functions are passed in.
 
