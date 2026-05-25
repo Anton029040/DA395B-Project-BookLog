@@ -6,8 +6,8 @@ export const useBookFilters = () => {
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);       // type = string array
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedRating, setSelectedRating] = useState<number | undefined>(); // type = number or undefined
-    const [selectEarliestPublishYear, setEarliestPublishYear] = useState<number | undefined>();
-    const [selectLatestPublishYear, setLatestPublishYear] = useState<number | undefined>();
+    const [selectedEarliestPublishYear, setEarliestPublishYear] = useState<number | undefined>();
+    const [selectedLatestPublishYear, setLatestPublishYear] = useState<number | undefined>();
 
     /* function to update the selected authors based on the users selected/deselected filters.
 
@@ -55,8 +55,8 @@ export const useBookFilters = () => {
         selectedAuthors,
         selectedGenres,
         selectedRating,
-        earliestPublishYear,
-        latestPublishYear,
+        selectedEarliestPublishYear,
+        selectedLatestPublishYear,
 
         // the methods to set the selected/deselected filters (toggling)
         setSelectedRating,

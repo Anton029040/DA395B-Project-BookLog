@@ -15,9 +15,9 @@ export const searchBooks = async (params: SearchBookParams) => {
     const searchParams = new URLSearchParams();     // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);        
     
-    /*********************************************************
+    /* ======================================================
                 Filter List checks for API-Query
-     *********************************************************/
+       ====================================================== */
     // query = user input of type string -> the SEARCH BAR in the header
     if (params.query){
         searchParams.append("query", params.query);
@@ -53,15 +53,15 @@ export const searchBooks = async (params: SearchBookParams) => {
         searchParams.append("latest-publish-year", String(params.latestPublishYear));
     }
 
-    /*********************************************************
+    /* ======================================================
                 Sorting drop-down checks for API-Query
-     *********************************************************/
+       ====================================================== */
 
     // add sorting checks here: alphabetical(both ways), genre, title, author, publish year
 
-    /*********************************************************
+    /* ======================================================
                         Final API-Query
-     *********************************************************/
+       ====================================================== */
     // unless otherwise specified, this shows 10 results (books) per page -> can: load more/next page/ previous page
     searchParams.append("number", String(params.number ?? 10)); // how many books to return
     searchParams.append("offset", String(params.offset ?? 0));  // how many books to skip (pagination)
