@@ -1,4 +1,4 @@
-import type { SearchBookParams } from "../types/SearchBookParams";  // this is a type(ts) not a js runtime value hence "type"
+import type { SearchBookParams, SearchBooksResponse } from "../types/SearchBook";  // this is a type(ts) not a js runtime value hence "type"
 
 const API_KEY = import.meta.env.VITE_BIG_BOOK_API_KEY;  // api key from .env
 const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
@@ -10,7 +10,7 @@ const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
       NOTE: whilst the api doesn't have the capability of returning a list of genres, each book
             does contain a genre and can therefore be filtered by genre. To use genre as a
             filter a hard-coded list of genres is required */
-export const searchBooks = async (params: SearchBookParams) => {
+export const searchBooks = async (params: SearchBookParams): Promise<SearchBooksResponse> => {
 
     const searchParams = new URLSearchParams();     // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);        
@@ -53,7 +53,15 @@ export const searchBooks = async (params: SearchBookParams) => {
         searchParams.append("latest-publish-year", String(params.latestPublishYear));
     }
 
-    // unless otherwise specified, this shows 10 results (books) per page -> can: load more/next page/ previous page
+    if (params.sort){
+        searchParams.append("sort", params.sort);
+    }
+
+    if (params.sortDirection){
+        searchParams.append("sort-direction", params.sortDirection);
+    }
+
+    // unless otherwise specified, this shows 100 results per page -> can: load more/next page/previous page
     searchParams.append("number", String(params.number ?? 100)); // how many books to return
     searchParams.append("offset", String(params.offset ?? 0));   // how many books to skip (pagination)
 

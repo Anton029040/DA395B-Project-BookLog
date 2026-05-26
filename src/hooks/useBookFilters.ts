@@ -3,9 +3,9 @@ import { useState } from "react";
 // re-useable logic for filtering books by the users selected filters 
 export const useBookFilters = () => {
 
-    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);       // type = string array
+    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);                           // type = string array
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-    const [selectedRating, setSelectedRating] = useState<number | undefined>(); // type = number or undefined
+    const [selectedRating, setSelectedRating] = useState<number | undefined>();                     // type = number or undefined
     const [selectedEarliestPublishYear, setEarliestPublishYear] = useState<number | undefined>();
     const [selectedLatestPublishYear, setLatestPublishYear] = useState<number | undefined>();
 

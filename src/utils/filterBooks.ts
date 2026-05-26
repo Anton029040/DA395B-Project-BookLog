@@ -19,6 +19,7 @@ export const sortAuthorsBySurname = (authors: string[]) => {
         getSurname(a).localeCompare(getSurname(b)));
 };
 
+// getting unique author names (avoiding duplicates)
 export const getUniqueValues = (values: string[]) => {
     return [...new Set(values)];
 };

@@ -1,16 +1,16 @@
-import { ueseEffect, useState } from "react";   // useEffect = run code on changes, useState = stores states/values in the hook
+import { useEffect, useState } from "react";   // useEffect = run code on changes, useState = stores states/values in the hook
 
 import { searchBooks } from "../api/bigBookApi";                                // fetch books from external API
-import { ApiBook } from "../types/ApiBook";                                     // Typescript (book object from the API)
+import type { ApiBook } from "../types/ApiBook";                                // Typescript (book object from the API)
 import { getUniqueValues, sortAuthorsBySurname } from "../utils/filterBooks";   // uniqueValues = removes duplicates. sort alphabetically by surname
 
 
-// The hook expects a query string to know what type of book or authors to fetch (ie. "books about wizards")
+// The hook expects a query string to know what authors to fetch from the API / Local Storage (ie. "Jane Austin")
 interface useAvailableAuthorProps {
     query: string;
 }
 
-/* Hook responsible for the logic pertaining to filtering authors in the FilterSidebar.
+/* Hook responsible for the logic pertaining to retrieving and storing authors for the FilterSidebar.
     -> fetches all authors from the API
     -> removes duplicate authors
     -> sorts authors by surname (alphabetically)
@@ -19,14 +19,14 @@ interface useAvailableAuthorProps {
     
     on first run this should make an API request but once/if the author
     information is in local storage, it should make 0 API requests */
-export const useAvailableAuthors = ({ query }: useAuthorFilterProps) => {
+export const useAvailableAuthors = ({query,}: useAvailableAuthorProps) => {
     const [availableAuthors, setAvailableAuthors] = useState<string[]>([]);     // stores all authors as an array of strings
     const [loadAuthors, setLoadAuthors] = useState(false);                      // loading state (fetching authors or finished fetching)
 
     useEffect(() =>{                                                            // runs when components is first loaded or when the query changes
         const loadAuthors = async () => {                                       // useEffect cant be async hence this function
             const storageKey = `authors-${query}`;                              // allows different searches to have different author lists cached
-            const storedAuthors = loacalStorage.getItem(storageKey);            // retrieve cached authors from localStorage (strings ONLY)
+            const storedAuthors = localStorage.getItem(storageKey);            // retrieve cached authors from localStorage (strings ONLY)
 
             if (storedAuthors) {                                                // if author exists in localStorage
                 setAvailableAuthors(JSON.parse(storedAuthors));                 // convert JSON string to array, store in state
@@ -49,11 +49,11 @@ export const useAvailableAuthors = ({ query }: useAuthorFilterProps) => {
                     ?? []                                                       // if authors dont exist, returns and empty array
                 );
                     
-                const uniqueSortedAuthors = sortAuthorsBySurname(getUniqueValues(allAuthors));  // remove duplicate authors and sort by surname
+                const uniqueSortedAuthors = sortAuthorsBySurname(getUniqueValues(authorsListFromApi));  // remove duplicate authors and sort by surname
 
                 setAvailableAuthors(uniqueSortedAuthors);                       // store processed authors in the state
 
-                loacalStorage.setItem(                                          // save authors to localStorage (strings only hence conversion)
+                localStorage.setItem(                                          // save authors to localStorage (strings only hence conversion)
                     storageKey,
                     JSON.stringify(uniqueSortedAuthors)
                 );

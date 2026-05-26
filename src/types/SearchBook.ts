@@ -1,4 +1,8 @@
 // The search options sent to the api (for filtering and sorting) - a request/query to the api to retrieve information
+
+/* ===================================
+        Request / Query parameters
+   =================================== */
 export interface SearchBookParams {
     query?: string;                     // search query ie: "books about wizards"
     authors?: string[];                 // A comma-separated list of author ids or names. Only books from any of the given authors will be returned. 
@@ -12,3 +16,13 @@ export interface SearchBookParams {
     number?: number;                    // The number of books to return in range [1,100]
     offset?: number;                    // The number of books to skip in range [0,1000]
 }
+
+/* ===================================
+                API Response
+   =================================== */
+   export interface SearchBooksResponse {
+    available: number;
+    number: number;
+    offset: number;
+    books: ApiBook[][];
+   }

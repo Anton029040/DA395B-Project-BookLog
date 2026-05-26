@@ -1,5 +1,7 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
+import { useAuthorFilter } from "/src/hooks/useAuthorFilter";
+
 
 /*  Defining the shape and types of ALL the props received by this component:
     - this helps typescript understand what data and functions are passed in.
@@ -56,13 +58,23 @@ interface FilterSidebarProps{
         clearFilters,
 
     }: FilterSidebarProps) => {     // <- end of parameters & start of component
-       
+        const {
+            authorSearch,
+            visibleAuthors,
+            totalFilteredAuthors,
+            updateAuthorSearch,
+            handleScroll,
+        } = useAuthorFilter({
+            availableAuthors,
+            selectedAuthors,
+        });
+
+        const ratings = [1, 2, 3, 4, 5];
 
 
         return (
             <aside> {/* used for sidebars/secondary content */}
                 <h2>Filters</h2>
-
                 <Accordion alwaysOpen> {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
                     {/* =====================================
@@ -78,14 +90,18 @@ interface FilterSidebarProps{
                                 type = "text"
                                 placeholder = "Search authors..."
                                 value = {authorSearch}
-                                onChange = {(event) => setAuthorSearch(event.target.value)}
+                                onChange = {(event) => updateAuthorSearch(event.target.value)}
                                 className = "mb-3"
                             />
                             
                             {/* alphabetical list of authors with checkboxes */}
-                            <div className = "author-filter-list">
+                            <div 
+                                className = "author-filter-list"
+                                onScroll = {handleScroll}
+                            >
+                                {visibleAuthors.length === 0 && <p>No authors found</p>}
                                 
-                                {authorsForLetter.map((author) => (                     
+                                {visibleAuthors.map((author) => (                     
                                     <Form.Check                                         
                                         key = {author}                                  
                                         type = "checkbox" 
@@ -95,6 +111,12 @@ interface FilterSidebarProps{
                                         onChange = {() => toggleAuthor(author)}        
                                     />
                                 ))}
+
+                                {visibleAuthors.length < totalFilteredAuthors && (
+                                    <p className = "author-load-more-text">
+                                        Scroll to load more authors
+                                    </p>
+                                )}
   
                             </div>
                         </Accordion.Body>
