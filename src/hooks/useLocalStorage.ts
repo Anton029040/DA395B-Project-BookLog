@@ -2,23 +2,30 @@ export {};  /* placeholder for testing */
 
 /**
  * Method for saving a book/review. 
- * @param title The title of the book
- * @param authors A list of string containing the authrors names
- * @param imageURL A string containing the url to the image
  * @param review The review of the book
  * @param rating The rating of the book
  * @param bookId The id of the book to be reviewd
  * @returns True if saving the review was succesfful. False if not.
  */
-export function saveReview(title : string, authors : [], imageURL : string, review : string, rating : string, bookId : number) {
-    let newReview = {review, rating, bookId};
+export function saveReview(review : string, rating : string, bookId : number) {
+    let newReview = {
+        review, 
+        rating, 
+        bookId
+    };
+
     let successfulSave = false;
     const key = "bookReviews";
     const reviews = getList(key);
+    console.log(reviews);
+    console.table(reviews);
+    console.log("This is the new review");
+
 
     let found = false;
 
     for (let i = 0; i < reviews.length; i++) {
+        console.log(reviews[i]);
         if (reviews[i].bookId === bookId) {
             reviews[i] = newReview;
             found = true;
@@ -35,6 +42,46 @@ export function saveReview(title : string, authors : [], imageURL : string, revi
     storeArray(key, reviews);
 
     return successfulSave;
+}
+
+/**
+ * Function that collects a review based on a books ID
+ * @param bookId The ID of the book
+ * @returns The review of the book
+ */
+export function getReview(bookId : string) {
+    const key = "bookReviews";
+    let reviews = getList(key);
+    let review = "";
+
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].bookId === Number(bookId)) {
+            review = reviews[i].review;
+            break;
+        }
+    }
+
+    return review;
+}
+
+/**
+ * Function that collects the rating based on a books ID
+ * @param bookId The id of the book
+ * @returns The rating of the book
+ */
+export function getRating(bookId : string) {
+    const key = "bookReviews";
+    let reviews = getList(key);
+    let rating = "";
+
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].bookId === Number(bookId)) {
+            rating = reviews[i].rating;
+            break;
+        }
+    }
+
+    return rating;   
 }
 
 /**

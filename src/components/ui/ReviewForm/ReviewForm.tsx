@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import "./ReviewForm.css";
+import { getRating, getReview, saveReview } from '../../../hooks/useLocalStorage';
 
-type reviewForm = {
-    oldReview? : string;
-    oldRating? : string;
-}
-
+type ReviewFormProps = {
+    id?: string;
+};
 
 /* Component that contains the input fields of a review. Contains a textarea for writing a review / seeing an old one.
    Also contains a dropdown menu where user can pick between 1-5 stars to give a book. There is also a submit button
 */
-const ReviewForm = ({oldReview, oldRating} : reviewForm) => {
-    const [review, setReview] = useState(oldReview ?? "");
-    const [rating, setRating] = useState(oldRating ?? "0");
+const ReviewForm = ({ id }: ReviewFormProps) => {
+    const [review, setReview] = useState("");
+    const [rating, setRating] = useState("0");
+
+    useEffect (() => {
+        if (id) {
+            setRating(getRating(id));
+            setReview(getReview(id));
+        }
+    }, [id]);
 
     /* Function for doing controls before a book review is saved */
     function onSubmit() {
@@ -24,8 +30,7 @@ const ReviewForm = ({oldReview, oldRating} : reviewForm) => {
             alert("The book needs to have a rating before marking it as read");
             return;
         }
-
-        // todo Needs to call method that saves book. There is one already in hooks/useLocalStorage called saveReview. Cant call now since there is nothing to save
+        saveReview(review, rating, Number(id));
     }
 
     return (

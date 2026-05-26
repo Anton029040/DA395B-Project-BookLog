@@ -17,7 +17,7 @@ const SearchBar = () => {
             alert("The searchfield is empty");
             return;
         }
-        navigate(`?search=${encodeURIComponent(query.trim())}`);
+        navigate(`?query=${encodeURIComponent(query.trim())}`);
     };
 
 
