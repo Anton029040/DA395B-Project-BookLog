@@ -154,6 +154,44 @@ interface FilterSidebarProps{
                         </Accordion.Body>
                     </Accordion.Item>
 
+                    {/* =====================================
+                          Publish Year Range filter section
+                        ===================================== */}
+                    <Accordion.Item eventKey="3">
+                        <Accordion.Header>Publish Year</Accordion.Header>
+                        <Accordion.Body>
+                            <Form.Group>
+                                <Form.Label>
+                                    From:
+                                </Form.Label>
+
+                                <Form.Control                                 
+                                    type = "number" 
+                                    placeholder = "Earliest year (ex. 1882)"
+                                    value = {selectedEarliestPublishYear ?? ""}  
+                                    onChange = {(event) => setEarliestPublishYear(
+                                        event.target.value === "" ? undefined : Number(event.target.value))
+                                    } 
+                                />
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Label>
+                                    To:
+                                </Form.Label>
+
+                                <Form.Control                                 
+                                    type = "number" 
+                                    placeholder = "Latest year (ex. 1956)"
+                                    value = {selectedLatestPublishYear ?? ""}  
+                                    onChange = {(event) => setLatestPublishYear(
+                                        event.target.value === "" ? undefined : Number(event.target.value))
+                                    } 
+                                />
+                            </Form.Group>
+                        </Accordion.Body>
+                    </Accordion.Item>
+
                 </Accordion>
             </div>
         );
