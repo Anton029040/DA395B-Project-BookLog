@@ -53,19 +53,13 @@ export const searchBooks = async (params: SearchBookParams) => {
         searchParams.append("latest-publish-year", String(params.latestPublishYear));
     }
 
-    /* ======================================================
-                Sorting drop-down checks for API-Query
-       ====================================================== */
-
-    // add sorting checks here: alphabetical(both ways), genre, title, author, publish year
-
-    /* ======================================================
-                        Final API-Query
-       ====================================================== */
     // unless otherwise specified, this shows 10 results (books) per page -> can: load more/next page/ previous page
     searchParams.append("number", String(params.number ?? 10)); // how many books to return
     searchParams.append("offset", String(params.offset ?? 0));  // how many books to skip (pagination)
 
+    /* ======================================================
+                       API-Query
+       ====================================================== */
     // send query and wait for a response
     const response = await fetch(
         `${ BASE_URL }/search-books?${ searchParams.toString() }`

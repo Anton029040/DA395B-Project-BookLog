@@ -12,15 +12,15 @@ import { starsToRating } from "../utils/starsToRating";             // helper fu
 
 // This is the page connected to the endpoint "/"
 const HomePage = () => {
-    /* ======================================================
-                    Search bar (user input)
-       ====================================================== */
+    /* ====================================================================================================================
+        SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER
+       ==================================================================================================================== */
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search" || "books");
 
-    /* ====================================================== 
-                        Filter sidebar 
-       ====================================================== */
+    /* ==================================================================================================================== 
+        SIDEBAR FILTER: THE USERS SELECTED FILTERS FOUND IN THE BODY 
+       ==================================================================================================================== */
     const [books, setBooks] = useState<ApiBook[]>([]);          // book state returned from API (array of ApiBook objects)
     const {                                                     // destructured values/functions from the hook
         // currently selected filters:                           
@@ -61,8 +61,7 @@ const HomePage = () => {
             )
         ),
     ];
-    console.log(books);
-    console.log(availableAuthors);
+    
 
     /* These are temporary hardcoded genres, the API endpoint does not return genres,
         only the single-book endpoint does. 
@@ -130,32 +129,27 @@ const HomePage = () => {
     ]); 
 
     return(
-        <main>
-            <p>You are in Home page</p>
-
-            <Container>
-                <Row>
-                    <Col md={3}>
-                        <FilterSidebar
-                            availableAuthors = {availableAuthors}
-                            availableGenres = {availableGenres}
-                            selectedAuthors = {selectedAuthors}
-                            selectedGenres = {selectedGenres}
-                            selectedRating = {selectedRating}
-                            selectedEarliestPublishYear = {selectedEarliestPublishYear}
-                            selectedLatestPublishYear = {selectedLatestPublishYear}
-                            toggleAuthor = {toggleAuthor}
-                            toggleGenre = {toggleGenre}
-                            setSelectedRating = {setSelectedRating}
-                            setEarliestPublishYear = {setEarliestPublishYear}
-                            setLatestPublishYear = {setLatestPublishYear}
-                            clearFilters = {clearFilters}
-                        />
-                    </Col>
-                </Row>
-            </Container>
-            
-        </main>
+        <Container>
+            <Row>
+                <Col md={3}>
+                    <FilterSidebar
+                        availableAuthors = {availableAuthors}
+                        availableGenres = {availableGenres}
+                        selectedAuthors = {selectedAuthors}
+                        selectedGenres = {selectedGenres}
+                        selectedRating = {selectedRating}
+                        selectedEarliestPublishYear = {selectedEarliestPublishYear}
+                        selectedLatestPublishYear = {selectedLatestPublishYear}
+                        toggleAuthor = {toggleAuthor}
+                        toggleGenre = {toggleGenre}
+                        setSelectedRating = {setSelectedRating}
+                        setEarliestPublishYear = {setEarliestPublishYear}
+                        setLatestPublishYear = {setLatestPublishYear}
+                        clearFilters = {clearFilters}
+                    />
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

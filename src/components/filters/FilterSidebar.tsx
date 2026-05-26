@@ -1,6 +1,5 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
-import { sortAuthorsBySurname } from "../../utils/filterBooks";
 
 /*  Defining the shape and types of ALL the props received by this component:
     - this helps typescript understand what data and functions are passed in.
@@ -57,29 +56,47 @@ interface FilterSidebarProps{
         clearFilters,
 
     }: FilterSidebarProps) => {     // <- end of parameters & start of component
-        // ratings array for checkbox inputs using .map()
-        const ratings = [1, 2, 3, 4, 5];
+       
+
 
         return (
-            <aside>                           {/* used for sidebars/secondary content */}
-                <h2>Search Filters</h2>
-                <Accordion alwaysOpen>        {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
+            <aside> {/* used for sidebars/secondary content */}
+                <h2>Filters</h2>
+
+                <Accordion alwaysOpen> {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
                     {/* =====================================
                                 Authors filter section
                         ===================================== */}
                     <Accordion.Item eventKey="0">
-                        <Accordion.Header>Authors</Accordion.Header>                {/* clickable accordian title (expand/collapse) */}
-                        <Accordion.Body>                                            {/* content inside the accordian */}
-                            {availableAuthors.map((author) => (                     
-                                <Form.Check                                         
-                                    key = {author}                                  
-                                    type = "checkbox"                               
-                                    label = {author}                                
-                                    checked = {selectedAuthors.includes(author)}   
-                                    onChange = {() => toggleAuthor(author)}        
-                                />
-                            ))}
+                        <Accordion.Header>Authors</Accordion.Header> {/* clickable accordian title (expand/collapse) */}
+
+                        <Accordion.Body> {/* content inside the accordian */}
+
+                            {/* user input field: text box */}
+                            <Form.Control
+                                type = "text"
+                                placeholder = "Search authors..."
+                                value = {authorSearch}
+                                onChange = {(event) => setAuthorSearch(event.target.value)}
+                                className = "mb-3"
+                            />
+                            
+                            {/* alphabetical list of authors with checkboxes */}
+                            <div className = "author-filter-list">
+                                
+                                {authorsForLetter.map((author) => (                     
+                                    <Form.Check                                         
+                                        key = {author}                                  
+                                        type = "checkbox" 
+                                        id = {`author-${author}`}                              
+                                        label = {author}                                
+                                        checked = {selectedAuthors.includes(author)}   
+                                        onChange = {() => toggleAuthor(author)}        
+                                    />
+                                ))}
+  
+                            </div>
                         </Accordion.Body>
                     </Accordion.Item>
 
