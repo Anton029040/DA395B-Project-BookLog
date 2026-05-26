@@ -68,14 +68,20 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
     /* ======================================================
                        API-Query
        ====================================================== */
+
+    console.log("API URL test:", `${BASE_URL}/search-books?${searchParams.toString()}`);        // <- TESTING: REMOVE LATER
+
     // send query and wait for a response
     const response = await fetch(
-        `${ BASE_URL }/search-books?${ searchParams.toString() }`
+        `${BASE_URL}/search-books?${searchParams.toString()}`
     );
 
     if (!response.ok) {
         throw new Error("Failure Searching Books, see bigBookApi");
     }
 
-    return response.json();
+    const data = response.json();
+    console.log("Api response:", data);                                  // <- TESTING: REMOVE LATER
+
+    return data;                            
 };

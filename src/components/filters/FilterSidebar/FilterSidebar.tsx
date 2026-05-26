@@ -99,9 +99,7 @@ interface FilterSidebarProps{
                             <div 
                                 className = "author-filter-list"
                                 onScroll = {handleScroll}
-                            >
-                                {visibleAuthors.length === 0 && <p>No authors found</p>}
-                                
+                            >                                
                                 {visibleAuthors.map((author) => (                     
                                     <Form.Check                                         
                                         key = {author}                                  
