@@ -1,6 +1,7 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
 import { useAuthorFilter } from "/src/hooks/useAuthorFilter";
+import "./FilterSidebar.css";
 
 
 /*  Defining the shape and types of ALL the props received by this component:
@@ -111,13 +112,6 @@ interface FilterSidebarProps{
                                         onChange = {() => toggleAuthor(author)}        
                                     />
                                 ))}
-
-                                {visibleAuthors.length < totalFilteredAuthors && (
-                                    <p className = "author-load-more-text">
-                                        Scroll to load more authors
-                                    </p>
-                                )}
-  
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>

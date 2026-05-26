@@ -3,12 +3,12 @@ import { useSearchParams } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 
 // filter sidebar imports:
-import { searchBooks } from "../api/bigBookApi";                    // our API function that fetches books from the Big Book API
-import type { ApiBook } from "../types/ApiBook";                    // our typescript type (books fetched from the api)
-import { useBookFilters } from "../hooks/useBookFilters";           // our hook that stores each filter state
-import FilterSidebar from "../components/filters/FilterSidebar";    // the filter sidebar component
-import { starsToRating } from "../utils/starsToRating";             // helper function: converts stars (1-5) to API rating (0-1)
-import { useAvailableAuthors } from "../hooks/useAvailableAuthors"
+import { searchBooks } from "../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
+import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
+import { useBookFilters } from "../hooks/useBookFilters";                           // our hook that stores each filter state
+import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
+import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
+import { useAvailableAuthors } from "../hooks/useAvailableAuthors"                  // fetching and storing Api Authors
 
 
 // This is the page connected to the endpoint "/"

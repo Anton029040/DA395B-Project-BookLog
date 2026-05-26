@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { sortAuthorsBySurname } from "../utils/filterBooks";    // helper function to sort authors alphabetically by surname
+import { normaliseText, sortAuthorsAlphabetically } from "../utils/filterBooks";    // helper functions to sort authors alphabetically
 
 // The types of props expected to be passed to the hook are: authors available for filtering, and the authors selected by the user
 interface useAuthorFilterProps {
@@ -10,7 +10,7 @@ interface useAuthorFilterProps {
 
 /* Hook responsible for the logic pertaining to filtering authors in the FilterSidebar.
     -> filters authors using search input (search bar in the sidebar)
-    -> sorting authors alphabetically by surname
+    -> sorting authors alphabetically (input doesn't require ".")
     -> selected authors stay visible at the top of the authors search field
     -> "lazy loading": loads more authors only when the user scrolls
     -> controls the author filter UI logic   */
@@ -18,10 +18,10 @@ export const useAuthorFilter = ({ availableAuthors, selectedAuthors}: useAuthorF
     const [authorSearch, setAuthorSearch] = useState("");                                   // state: user input in searchbar (update as user types)
     const [showAuthorCount, setShowAuthorCount] = useState(25);                             // state: controls how many authors are currently visible
 
-    const searchedAuthors = sortAuthorsBySurname(availableAuthors)                          // sort all authors,
+    const searchedAuthors = sortAuthorsAlphabetically(availableAuthors)                     // sort all authors,
         .filter((author) =>                                                                 // then filter based on user input
-        author.toLowerCase()                                                                // search is not case-sensitive
-        .includes(authorSearch.toLowerCase())                           
+            normaliseText(author)                                                           // input isnt case-sensitive, and doesn't contain "."
+            .includes(normaliseText(authorSearch))                                          // comparison of input vs actual authors
     );
 
     const userSelectedAuthors = selectedAuthors.filter((author) =>                  // finds authors that match the search & selected by the user.

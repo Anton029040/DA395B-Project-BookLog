@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";   // useEffect = run code on change
 
 import { searchBooks } from "../api/bigBookApi";                                // fetch books from external API
 import type { ApiBook } from "../types/ApiBook";                                // Typescript (book object from the API)
-import { getUniqueValues, sortAuthorsBySurname } from "../utils/filterBooks";   // uniqueValues = removes duplicates. sort alphabetically by surname
+import { getUniqueValues, sortAuthorsAlphabetically } from "../utils/filterBooks";   // uniqueValues = removes duplicates. sort alphabetically by surname
 
 
 // The hook expects a query string to know what authors to fetch from the API / Local Storage (ie. "Jane Austin")
