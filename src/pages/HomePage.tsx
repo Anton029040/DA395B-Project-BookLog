@@ -8,7 +8,8 @@ import type { ApiBook } from "../types/ApiBook";                                
 import { useBookFilters } from "../hooks/useBookFilters";                           // our hook that stores each filter state
 import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
-import { useAvailableAuthors } from "../hooks/useAvailableAuthors"                  // fetching and storing Api Authors
+import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
+import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
 
 
 // This is the page connected to the endpoint "/"
@@ -44,13 +45,18 @@ const HomePage = () => {
         clearFilters,
 
     } = useBookFilters();
-
-   const {availableAuthors} = useAvailableAuthors({ query, });
     
+    const {availableAuthors} = useAvailableAuthors({ query, });
 
-    /* These are hardcoded genres, the API endpoint does not return genres,
-        only the single-book endpoint does. 
-        TODO: If there is time, fetch the genres seperately from the single-book endpoint */
+    // setting up the delays for the API requests for the user added filters
+    const debouncedQuery = useDebounce(query);
+    const debouncedAuthors = useDebounce(selectedAuthors);
+    const debouncedGenres = useDebounce(selectedGenres);
+    const debouncedRating = useDebounce(selectedRating);
+    const debouncedEarliestPublishYear = useDebounce(selectedEarliestPublishYear);
+    const debouncedLatestPublishYear = useDebounce(selectedLatestPublishYear);
+
+    // These are hardcoded genres, the API endpoint does not return genres, only the single-book endpoint does. 
     const availableGenres = [
         "adventure",
         "art",
@@ -102,12 +108,12 @@ const HomePage = () => {
                 - sorting (TODO)
                 - pagination */
             const result = await searchBooks({
-                query: query,                                                           // the user input in the searchbar    
-                authors: selectedAuthors.length > 0 ? selectedAuthors : undefined,      // selected authors array
-                genres: selectedGenres.length > 0 ? selectedGenres : undefined,         // selected genres array
-                minRating: selectedRating ? starsToRating(selectedRating) : undefined,  // if rating, convert to API rating, else send undefined. 
-                earliestPublishYear: selectedEarliestPublishYear,                       // selected earliest publish year
-                latestPublishYear: selectedLatestPublishYear,                           // selected latest publish year
+                query: debouncedQuery,                                                    // the user input in the (header) searchbar
+                authors: debouncedAuthors.length > 0 ? debouncedAuthors : undefined,      // selected authors array
+                genres: debouncedGenres.length > 0 ? debouncedGenres : undefined,         // selected genres array
+                minRating: debouncedRating ? starsToRating(debouncedRating) : undefined,  // if rating, convert to API rating, else send undefined. 
+                earliestPublishYear: debouncedEarliestPublishYear,                        // selected earliest publish year
+                latestPublishYear: debouncedLatestPublishYear,                            // selected latest publish year
 
                 sort: "rating",
                 sortDirection: "DESC",
@@ -124,18 +130,18 @@ const HomePage = () => {
             const flattenedBooks: ApiBook[] = result.books.flat();
             setBooks(flattenedBooks);                                                   // update state, re-render component, updates UI
 
-            console.log("selected Genres:", selectedGenres);                            // <- TESTING: REMOVE LATER
+            console.log("selected Genres:", debouncedGenres);                            // <- TESTING: REMOVE LATER
         };  
 
         loadBooks();                                                                    // call the async fucntion
 
     }, [    // <- dependencies start here: if any of these values change, re-run useEffect
-        query,
-        selectedAuthors,
-        selectedGenres,
-        selectedRating,
-        selectedEarliestPublishYear,
-        selectedLatestPublishYear,
+        debouncedQuery,
+        debouncedAuthors,
+        debouncedGenres,
+        debouncedRating,
+        debouncedEarliestPublishYear,
+        debouncedLatestPublishYear,
     ]); 
 
     return(
