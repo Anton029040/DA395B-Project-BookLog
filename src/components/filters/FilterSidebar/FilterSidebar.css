@@ -4,6 +4,15 @@
     padding-right: 8px;
 }
 
+.genre-filter-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap:4px;
+}
+
 .filter-sidebar {
     max-width: 25%;
 }

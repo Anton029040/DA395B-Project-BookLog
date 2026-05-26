@@ -120,16 +120,18 @@ interface FilterSidebarProps{
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Genres</Accordion.Header>
                         <Accordion.Body>
-                            {availableGenres.map((genre) => (
-                                <Form.Check
-                                    key = {genre}                                  
-                                    type = "checkbox" 
-                                    id = {`genre-${genre}`}                              
-                                    label = {genre}                                
-                                    checked = {selectedGenres.includes(genre)}   
-                                    onChange = {() => toggleGenre(genre)} 
-                                />
-                            ))}
+                            <div className = "genre-filter-list">
+                                {availableGenres.map((genre) => (
+                                    <Form.Check
+                                        key = {genre}                                  
+                                        type = "checkbox" 
+                                        id = {`genre-${genre}`}                              
+                                        label = {genre}                                
+                                        checked = {selectedGenres.includes(genre)}   
+                                        onChange = {() => toggleGenre(genre)} 
+                                    />
+                                ))}
+                            </div>
                         </Accordion.Body>
                     </Accordion.Item>
 
