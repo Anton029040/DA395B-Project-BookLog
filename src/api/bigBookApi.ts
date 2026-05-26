@@ -54,8 +54,8 @@ export const searchBooks = async (params: SearchBookParams) => {
     }
 
     // unless otherwise specified, this shows 10 results (books) per page -> can: load more/next page/ previous page
-    searchParams.append("number", String(params.number ?? 10)); // how many books to return
-    searchParams.append("offset", String(params.offset ?? 0));  // how many books to skip (pagination)
+    searchParams.append("number", String(params.number ?? 100)); // how many books to return
+    searchParams.append("offset", String(params.offset ?? 0));   // how many books to skip (pagination)
 
     /* ======================================================
                        API-Query
