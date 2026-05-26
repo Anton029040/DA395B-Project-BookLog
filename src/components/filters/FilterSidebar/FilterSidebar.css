@@ -1,11 +1,11 @@
 .author-filter-list {
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
-.author-load-more-text {
-  margin-top: 12px;
-  font-size: 0.9rem;
-  color: gray;
+.filter-sidebar {
+    max-width: 25%;
 }
+
+

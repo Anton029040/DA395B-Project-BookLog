@@ -74,7 +74,7 @@ interface FilterSidebarProps{
 
 
         return (
-            <aside> {/* used for sidebars/secondary content */}
+            <div className = "filter-sidebar"> {/* used for sidebars/secondary content */}
                 <h2>Filters</h2>
                 <Accordion alwaysOpen> {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
@@ -113,22 +113,49 @@ interface FilterSidebarProps{
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
-
+                    
+                    {/* =====================================
+                                Genre filter section
+                        ===================================== */}
                     <Accordion.Item eventKey="1">
-                        <Accordion.Header>Accordion Item #2</Accordion.Header>
+                        <Accordion.Header>Genres</Accordion.Header>
                         <Accordion.Body>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
+                            {availableGenres.map((genre) => (
+                                <Form.Check
+                                    key = {genre}                                  
+                                    type = "checkbox" 
+                                    id = {`genre-${genre}`}                              
+                                    label = {genre}                                
+                                    checked = {selectedGenres.includes(genre)}   
+                                    onChange = {() => toggleGenre(genre)} 
+                                />
+                            ))}
+                        </Accordion.Body>
+                    </Accordion.Item>
+
+                    {/* =====================================
+                                Ratings filter section
+                        ===================================== */}
+                    <Accordion.Item eventKey="2">
+                        <Accordion.Header>Minimum Rating</Accordion.Header>
+                        <Accordion.Body>
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                                <Form.Check
+                                    key = {rating}                                  
+                                    type = "checkbox" 
+                                    id = {`rating-${rating}`}                              
+                                    label = {`${rating} star${rating > 1 ? "s" : ""}`}                                
+                                    checked = {selectedRating === rating}   
+                                    onChange = {() => setSelectedRating(
+                                        selectedRating === rating ? undefined : rating)
+                                    } 
+                                />
+                            ))}
                         </Accordion.Body>
                     </Accordion.Item>
 
                 </Accordion>
-            </aside>
+            </div>
         );
     };
     

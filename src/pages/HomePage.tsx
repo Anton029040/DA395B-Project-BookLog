@@ -48,14 +48,40 @@ const HomePage = () => {
    const {availableAuthors} = useAvailableAuthors({ query, });
     
 
-    /* These are temporary hardcoded genres, the API endpoint does not return genres,
+    /* These are hardcoded genres, the API endpoint does not return genres,
         only the single-book endpoint does. 
-        TODO:
-        - Add more genres (hard-coded) 
-        - If time: fetch the genres seperately from the single-book endpoint */
+        TODO: If there is time, fetch the genres seperately from the single-book endpoint */
     const availableGenres = [
+        "adventure",
+        "art",
+        "biography",
+        "business",
+        "children",
+        "comedy",
+        "crime",
+        "drama",
+        "economics",
         "fantasy",
+        "historical fiction",
+        "history",
+        "horror",
+        "memoir",
+        "mystery",
+        "music",
+        "nonfiction",
+        "philosophy",
+        "poetry",
+        "politics",
+        "programming",
+        "psychology",
+        "religion",
         "romance",
+        "science",
+        "science fiction",
+        "self-help",
+        "technology",
+        "thriller",
+        "young adult",
     ];
 
     /* ==================================================================== 
@@ -97,6 +123,8 @@ const HomePage = () => {
                 - books: [book, book, book, ..... ] */
             const flattenedBooks: ApiBook[] = result.books.flat();
             setBooks(flattenedBooks);                                                   // update state, re-render component, updates UI
+
+            console.log("selected Genres:", selectedGenres);                            // <- TESTING: REMOVE LATER
         };  
 
         loadBooks();                                                                    // call the async fucntion
@@ -112,25 +140,23 @@ const HomePage = () => {
 
     return(
         <Container fluid>
-            <Row>
-                <Col md={3}>
-                    <FilterSidebar
-                        availableAuthors = {availableAuthors}
-                        availableGenres = {availableGenres}
-                        selectedAuthors = {selectedAuthors}
-                        selectedGenres = {selectedGenres}
-                        selectedRating = {selectedRating}
-                        selectedEarliestPublishYear = {selectedEarliestPublishYear}
-                        selectedLatestPublishYear = {selectedLatestPublishYear}
-                        toggleAuthor = {toggleAuthor}
-                        toggleGenre = {toggleGenre}
-                        setSelectedRating = {setSelectedRating}
-                        setEarliestPublishYear = {setEarliestPublishYear}
-                        setLatestPublishYear = {setLatestPublishYear}
-                        clearFilters = {clearFilters}
-                    />
-                </Col>
-            </Row>
+            <Col className = "filter-column">
+                <FilterSidebar
+                    availableAuthors = {availableAuthors}
+                    availableGenres = {availableGenres}
+                    selectedAuthors = {selectedAuthors}
+                    selectedGenres = {selectedGenres}
+                    selectedRating = {selectedRating}
+                    selectedEarliestPublishYear = {selectedEarliestPublishYear}
+                    selectedLatestPublishYear = {selectedLatestPublishYear}
+                    toggleAuthor = {toggleAuthor}
+                    toggleGenre = {toggleGenre}
+                    setSelectedRating = {setSelectedRating}
+                    setEarliestPublishYear = {setEarliestPublishYear}
+                    setLatestPublishYear = {setLatestPublishYear}
+                    clearFilters = {clearFilters}
+                />
+            </Col>
         </Container>
     );
 };
