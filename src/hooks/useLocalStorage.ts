@@ -45,6 +45,34 @@ export function saveReview(review : string, rating : string, bookId : number) {
 }
 
 /**
+ * Method for saving a book/review. 
+ * @param bookId The id of the book to be reviewd
+ * @returns True if saving the review was succesfful. False if not.
+ */
+export function removeReview(bookId : number) {
+    const key = "bookReviews";
+    const reviews = getList(key);
+    let removed = false;
+
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].bookId === bookId) {
+            reviews.splice(i, 1);
+            
+            removed = true;
+            break;
+        }
+    }
+
+    storeArray(key, reviews);
+
+    if (!removed) {
+        alert("The book does not have a review or rating to remove")
+    }
+
+    return removed;
+}
+
+/**
  * Function that collects a review based on a books ID
  * @param bookId The ID of the book
  * @returns The review of the book
