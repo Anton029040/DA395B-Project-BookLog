@@ -87,6 +87,29 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
     return data;                            
 };
 
+export const searchBook = async (id : string) => {
+    const response = await fetch(
+        `${BASE_URL}/${id}?api-key=${API_KEY}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Failure Finding Book, see bigBookApi");
+    }
+
+    return response.json();
+}
+
+export const searchSimilarBooks = async (id : string) => {
+    const response = await fetch(
+        `${BASE_URL}/${id}/similar?api-key=${API_KEY}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Failure Finding Similar Books, see bigBookApi");
+    }
+
+    return response.json();
+}
 // reusable function for FETCHing authors from the API's "search authors" endpoint:
 export const searchAuthors = async (params: SearchAuthorParams): Promise<SearchAuthorResponse> => {
     const searchParams = new URLSearchParams();     

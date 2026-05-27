@@ -1,5 +1,6 @@
+// This is the page connected to the endpoint "/"
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
-import { useSearchParams } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 
 // filter sidebar imports:
@@ -14,11 +15,13 @@ import { useDebounce } from "../hooks/useDebounce";                             
 
 // This is the page connected to the endpoint "/"
 const HomePage = () => {
+    const navigate = useNavigate();
+  
     /* ====================================================================================================================
         SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER
        ==================================================================================================================== */
     const [searchParams] = useSearchParams();
-    const query = searchParams.get("search") || "books";
+    const query = searchParams.get("query") || "books";
 
     /* ==================================================================================================================== 
         SIDEBAR FILTER: THE USERS SELECTED FILTERS FOUND IN THE BODY 

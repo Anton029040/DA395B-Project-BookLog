@@ -1,0 +1,35 @@
+.container {
+    background-color: #FEFAE0;
+    max-width: 250px;
+    min-width: 150px;
+
+    padding-top: 10px;
+}
+
+.rating-dropdown {
+    max-width: 250px;
+}
+
+.review-text-area {
+    height: 200px;
+    max-width: 250px;
+}
+
+.submit-button {
+    max-width: 250px;
+    width: 100%;
+    background-color: #E9EDC9;
+    border-color: #E9EDC9;
+    color: rgb(36, 36, 36);
+}
+
+.submit-button:hover {
+    background-color: #CCD5AE;
+    border-color: #CCD5AE;
+}
+
+@media screen and (max-width: 600px) {
+    .rating-dropdown {
+        font-size: 11px;    
+    }
+}

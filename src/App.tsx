@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Header from "./components/layout/Header/Header";
 import Navbar from "./components/layout/Navbar/Navbar";
@@ -7,8 +7,6 @@ import HomePage from "./pages/HomePage";
 import TBRPage from "./pages/TBRPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import ReadPage from "./pages/ReadPage";
-
-
 import './index.css'
 
 // The main application shell -> should NOT contain business logic
