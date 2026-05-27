@@ -11,6 +11,7 @@ import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";  
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
+import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
 
 
 // This is the page connected to the endpoint "/"
@@ -173,6 +174,7 @@ const HomePage = () => {
                     setLatestPublishYear = {setLatestPublishYear}
                     clearFilters = {clearFilters}
                 />
+                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>
         </Container>
     );
