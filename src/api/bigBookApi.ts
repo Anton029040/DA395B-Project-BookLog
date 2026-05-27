@@ -1,4 +1,5 @@
-import type { SearchBookParams } from "../types/SearchBookParams";  // this is a type(ts) not a js runtime value hence "type"
+import type { SearchBookParams, SearchBooksResponse } from "../types/SearchBook";  // this is a type(ts) not a js runtime value hence "type"
+import type { SearchAuthorParams, SearchAuthorResponse } from "../types/SearchAuthor";
 
 const API_KEY = import.meta.env.VITE_BIG_BOOK_API_KEY;  // api key from .env
 const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
@@ -10,14 +11,14 @@ const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
       NOTE: whilst the api doesn't have the capability of returning a list of genres, each book
             does contain a genre and can therefore be filtered by genre. To use genre as a
             filter a hard-coded list of genres is required */
-export const searchBooks = async (params: SearchBookParams) => {
+export const searchBooks = async (params: SearchBookParams): Promise<SearchBooksResponse> => {
 
     const searchParams = new URLSearchParams();     // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);        
     
-    /*********************************************************
+    /* ======================================================
                 Filter List checks for API-Query
-     *********************************************************/
+       ====================================================== */
     // query = user input of type string -> the SEARCH BAR in the header
     if (params.query){
         searchParams.append("query", params.query);
@@ -53,29 +54,37 @@ export const searchBooks = async (params: SearchBookParams) => {
         searchParams.append("latest-publish-year", String(params.latestPublishYear));
     }
 
-    /*********************************************************
-                Sorting drop-down checks for API-Query
-     *********************************************************/
+    if (params.sort){
+        searchParams.append("sort", params.sort);
+    }
 
-    // add sorting checks here: alphabetical(both ways), genre, title, author, publish year
+    if (params.sortDirection){
+        searchParams.append("sort-direction", params.sortDirection);
+    }
 
-    /*********************************************************
-                        Final API-Query
-     *********************************************************/
-    // unless otherwise specified, this shows 10 results (books) per page -> can: load more/next page/ previous page
-    searchParams.append("number", String(params.number ?? 10)); // how many books to return
-    searchParams.append("offset", String(params.offset ?? 0));  // how many books to skip (pagination)
+    // unless otherwise specified, this shows 100 results per page -> can: load more/next page/previous page
+    searchParams.append("number", String(params.number ?? 100)); // how many books to return
+    searchParams.append("offset", String(params.offset ?? 0));   // how many books to skip (pagination)
+
+    /* ======================================================
+                       API-Query
+       ====================================================== */
+
+    console.log("API URL test:", `${BASE_URL}/search-books?${searchParams.toString()}`);        // <- TESTING: REMOVE LATER
 
     // send query and wait for a response
     const response = await fetch(
-        `${ BASE_URL }/search-books?${ searchParams.toString() }`
+        `${BASE_URL}/search-books?${searchParams.toString()}`
     );
 
     if (!response.ok) {
         throw new Error("Failure Searching Books, see bigBookApi");
     }
 
-    return response.json();
+    const data = await response.json();
+    console.log("Api response:", data);                                  // <- TESTING: REMOVE LATER
+
+    return data;                            
 };
 
 export const searchBook = async (id : string) => {
@@ -100,4 +109,32 @@ export const searchSimilarBooks = async (id : string) => {
     }
 
     return response.json();
+}
+// reusable function for FETCHing authors from the API's "search authors" endpoint:
+export const searchAuthors = async (params: SearchAuthorParams): Promise<SearchAuthorResponse> => {
+    const searchParams = new URLSearchParams();     
+    searchParams.append("api-key", API_KEY);  
+
+    if (params.name && params.name.trim() !== ""){              // important: raw user input here (don't normalise -> endpoint it format sensitive)
+        searchParams.append("name", params.name);
+    }
+
+    searchParams.append("number", String(params.number ?? 100)); // how many books to return
+    searchParams.append("offset", String(params.offset ?? 0));   // how many books to skip (pagination)
+
+    console.log("API URL test:", `${BASE_URL}/search-authors?${searchParams.toString()}`);        // <- TESTING: REMOVE LATER
+
+    // send request to API and wait for a response
+    const response = await fetch(
+        `${BASE_URL}/search-authors?${searchParams.toString()}`
+    );
+
+    if (!response.ok) {                                                // stop is the API request fails
+        throw new Error("Failure Searching Authors, see bigBookApi");
+    }
+
+    const data = await response.json();                                 // convert response body to JSON
+    console.log("Api response:", data);                                  // <- TESTING: REMOVE LATER
+
+    return data;  
 }

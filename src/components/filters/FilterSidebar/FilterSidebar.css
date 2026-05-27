@@ -1,0 +1,101 @@
+.filter-sidebar {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 10px;
+}
+
+.filter-sidebar h2 {
+    color: #1c1c1c;
+    margin-bottom: 8px;
+}
+
+/* Bootstrap accordion colour override */
+.filter-sidebar .accordion {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.filter-sidebar .accordion-item {
+    border-color: #D4A373;
+    background-color: #FEFAE0;
+}
+
+.filter-sidebar .accordion-button {
+    background-color: #FEFAE0;
+    color: #1c1c1c;
+    font-weight: 500;
+}
+
+.filter-sidebar .accordion-button:not(.collapsed) {
+    background-color: #E9EDC9;
+    color: #1c1c1c;
+    box-shadow: none;
+}
+
+.filter-sidebar .accordion-button:focus {
+    box-shadow: 0 0 0 2px #CCD5AE;
+    border-color: #CCD5AE;
+}
+
+.filter-sidebar .accordion-body {
+    background-color: #FEFAE0;
+}
+
+.author-filter-list,
+.genre-filter-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.genre-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Medium screens */
+@media screen and (max-width: 900px) {
+    .filter-sidebar {
+        max-width: 170px;
+        padding-left: 8px;
+    }
+
+    .filter-sidebar h2 {
+        font-size: 30px;
+    }
+
+    .filter-sidebar .accordion-button {
+        font-size: 16px;
+        padding: 16px 20px;
+    }
+}
+
+/* Small screens */
+@media screen and (max-width: 500px) {
+    .filter-sidebar {
+        max-width: 120px;
+        padding-left: 12px;
+    }
+
+    .filter-sidebar h2 {
+        font-size: 26px;
+    }
+
+    .filter-sidebar .accordion-button {
+        font-size: 15px;
+        padding: 14px 18px;
+        word-break: normal;
+    }
+
+    .filter-sidebar .accordion-body {
+        padding: 10px;
+    }
+
+    .author-filter-list,
+    .genre-filter-list {
+        max-height: 220px;
+    }
+}
+
+

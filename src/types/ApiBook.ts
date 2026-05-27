@@ -12,18 +12,20 @@ export interface ApiBook {
     rating?: Rating;
 }
 
-// nested objects in the API Get Book Information call
+// returns nested objects in the API "get-book-information" endpoint (single-book)
 export interface Identifiers {
     open_library_id?: string;
     isbn_10?: string;
     isbn_13?: string;
 }
 
+// returns Author object for both "book" and "search-authors" endpoints
 export interface Author {
     id: number;
     name: string;
 }
 
+// returns the API rating object (it uses values between 0-1, not 5 like we have)
 export interface Rating {
     average: number;
 }

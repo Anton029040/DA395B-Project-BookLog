@@ -17,10 +17,10 @@ const App = () => {
       <Navbar />
 
       <Routes>
-        <Route path= "/"     element= {<HomePage />} />
-        <Route path= "/tbr"  element= {<TBRPage />} />
-        <Route path= "/read" element= {<ReadPage />} />
-        <Route path="/books/:bookId" element= {<BookDetailsPage />} />
+        <Route path= "/"              element= {<HomePage />} />
+        <Route path= "/tbr"           element= {<TBRPage />} />
+        <Route path= "/read"          element= {<ReadPage />} />
+        <Route path="/books/:bookId"  element= {<BookDetailsPage />} />
       </Routes>
 
     </BrowserRouter>
