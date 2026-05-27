@@ -2,7 +2,6 @@ import "./SearchBar.css"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-
 /**
  * Component for a searchbar. The search bar includes a searchfield for typing and 
  * a button for submit. Can also sumbit via enter. The value of the searchfield is stored
