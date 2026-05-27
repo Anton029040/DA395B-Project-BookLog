@@ -1,4 +1,5 @@
 import type { SearchBookParams, SearchBooksResponse } from "../types/SearchBook";  // this is a type(ts) not a js runtime value hence "type"
+import type { SearchAuthorParams, SearchAuthorResponse } from "../types/SearchAuthor";
 
 const API_KEY = import.meta.env.VITE_BIG_BOOK_API_KEY;  // api key from .env
 const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL; // url from .env
@@ -85,3 +86,32 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
 
     return data;                            
 };
+
+// reusable function for FETCHing authors from the API's "search authors" endpoint:
+export const searchAuthors = async (params: SearchAuthorParams): Promise<SearchAuthorResponse> => {
+    const searchParams = new URLSearchParams();     
+    searchParams.append("api-key", API_KEY);  
+
+    if (params.name && params.name.trim() !== ""){              // important: raw user input here (don't normalise -> endpoint it format sensitive)
+        searchParams.append("name", params.name);
+    }
+
+    searchParams.append("number", String(params.number ?? 100)); // how many books to return
+    searchParams.append("offset", String(params.offset ?? 0));   // how many books to skip (pagination)
+
+    console.log("API URL test:", `${BASE_URL}/search-authors?${searchParams.toString()}`);        // <- TESTING: REMOVE LATER
+
+    // send request to API and wait for a response
+    const response = await fetch(
+        `${BASE_URL}/search-authors?${searchParams.toString()}`
+    );
+
+    if (!response.ok) {                                                // stop is the API request fails
+        throw new Error("Failure Searching Authors, see bigBookApi");
+    }
+
+    const data = await response.json();                                 // convert response body to JSON
+    console.log("Api response:", data);                                  // <- TESTING: REMOVE LATER
+
+    return data;  
+}

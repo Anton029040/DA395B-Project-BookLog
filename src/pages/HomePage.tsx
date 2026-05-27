@@ -46,7 +46,12 @@ const HomePage = () => {
 
     } = useBookFilters();
     
-    const {availableAuthors} = useAvailableAuthors({ query, });
+    const {
+        availableAuthors,
+        loadAuthors,
+        authorSearch,
+        setAuthorSearch,
+    } = useAvailableAuthors({ selectedAuthors, });
 
     // setting up the delays for the API requests for the user added filters
     const debouncedQuery = useDebounce(query);
@@ -146,10 +151,13 @@ const HomePage = () => {
 
     return(
         <Container fluid>
-            <Col className = "filter-column">
+            <Col xs = "auto" md = {3}>
                 <FilterSidebar
                     availableAuthors = {availableAuthors}
                     availableGenres = {availableGenres}
+                    authorSearch = {authorSearch}
+                    setAuthorSearch = {setAuthorSearch}
+                    loadAuthors = {loadAuthors}
                     selectedAuthors = {selectedAuthors}
                     selectedGenres = {selectedGenres}
                     selectedRating = {selectedRating}

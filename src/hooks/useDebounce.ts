@@ -7,10 +7,10 @@ export const useDebounce = <T, >(value: T, ) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setDelayValue(value);
-        }, 500);                                // hardcoded delay
+        }, 500);                                // hardcoded delay of 500ms
 
         return () => {
-            clearTimeout(timer);
+            clearTimeout(timer);                // clear old timer if value changes before 500ms
         };
 
     }, [value]);

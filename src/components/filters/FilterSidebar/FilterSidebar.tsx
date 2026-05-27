@@ -1,6 +1,5 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
-import { useAuthorFilter } from "/src/hooks/useAuthorFilter";
 import "./FilterSidebar.css";
 
 
@@ -13,6 +12,7 @@ interface FilterSidebarProps{
     // lists of items to populate the filter component with:
     availableAuthors: string[];                     // all author names ie. ["J.R.R. Tolkien", "J.K. Rowling"]
     availableGenres: string[];                      // all available genres
+    authorSearch: string;
     
     // lists of the user's currently selected filters:
     selectedAuthors: string[];                              // currently selected authors
@@ -33,6 +33,8 @@ interface FilterSidebarProps{
     setSelectedRating: React.Dispatch<React.SetStateAction<number | undefined>>;      // ratings
     setEarliestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>; // earliest publish year
     setLatestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>;   // latest publish year
+    setAuthorSearch: React.Dispatch<React.SetStateAction<string>>;
+    loadAuthors: boolean;
 
     // reset/clear ALL the filters to default:
     clearFilters: () => void;
@@ -51,6 +53,10 @@ interface FilterSidebarProps{
         selectedEarliestPublishYear,
         selectedLatestPublishYear,
 
+        authorSearch,
+        setAuthorSearch,
+        loadAuthors,
+
         toggleAuthor,
         toggleGenre,
         setSelectedRating,
@@ -59,16 +65,6 @@ interface FilterSidebarProps{
         clearFilters,
 
     }: FilterSidebarProps) => {     // <- end of parameters & start of component
-        const {
-            authorSearch,
-            visibleAuthors,
-            totalFilteredAuthors,
-            updateAuthorSearch,
-            handleScroll,
-        } = useAuthorFilter({
-            availableAuthors,
-            selectedAuthors,
-        });
 
         const ratings = [1, 2, 3, 4, 5];
 
@@ -91,16 +87,13 @@ interface FilterSidebarProps{
                                 type = "text"
                                 placeholder = "Search authors..."
                                 value = {authorSearch}
-                                onChange = {(event) => updateAuthorSearch(event.target.value)}
+                                onChange = {(event) => setAuthorSearch(event.target.value)}
                                 className = "mb-3"
                             />
                             
                             {/* alphabetical list of authors with checkboxes */}
-                            <div 
-                                className = "author-filter-list"
-                                onScroll = {handleScroll}
-                            >                                
-                                {visibleAuthors.map((author) => (                     
+                            <div className = "author-filter-list" >                                
+                                {availableAuthors.map((author) => (                     
                                     <Form.Check                                         
                                         key = {author}                                  
                                         type = "checkbox" 
