@@ -49,8 +49,7 @@ export const useAvailableAuthors = ({query,}: useAvailableAuthorProps) => {
                     ?? []                                                       // if authors dont exist, returns and empty array
                 );
                     
-                const uniqueSortedAuthors = sortAuthorsBySurname(getUniqueValues(authorsListFromApi));  // remove duplicate authors and sort by surname
-
+                const uniqueSortedAuthors = sortAuthorsAlphabetically(getUniqueValues(authorsListFromApi));  // remove duplicate authors and sort
                 setAvailableAuthors(uniqueSortedAuthors);                       // store processed authors in the state
 
                 localStorage.setItem(                                          // save authors to localStorage (strings only hence conversion)

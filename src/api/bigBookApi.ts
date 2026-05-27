@@ -80,7 +80,7 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
         throw new Error("Failure Searching Books, see bigBookApi");
     }
 
-    const data = response.json();
+    const data = await response.json();
     console.log("Api response:", data);                                  // <- TESTING: REMOVE LATER
 
     return data;                            
