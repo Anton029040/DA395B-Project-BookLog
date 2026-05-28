@@ -12,7 +12,7 @@ import "./TBRPage.css"
 
 const TBRPage = () => {
     const [searchParams] = useSearchParams();
-    const query = searchParams.get("query");
+    const query = searchParams.get("search");
     const [ booksInTBR, setBooksInTBR ] = useState<ApiBook[]>([]);
 
     const {                                                     // destructured values/functions from the hook
