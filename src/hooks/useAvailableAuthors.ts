@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";   // Effect = run code on changes, State = stores states/values
 
 import { searchAuthors } from "../api/bigBookApi";                                  // fetch authors from external API (function)
-import { getUniqueValues, sortAuthorsAlphabetically } from "../utils/filterBooks";  // removes duplicates & sort alphabetically (helper functions)
+import { getUniqueValues, sortAuthorsAlphabetically, normaliseText } from "../utils/filterBooks";  // removes duplicates & sort alphabetically (helper functions)
 import { useDebounce } from "./useDebounce";                                        // delays api requests (to avoid spam for every key press)
 
 // ================= CUSTOM HOOK: useAvailableAuthors  =================  
