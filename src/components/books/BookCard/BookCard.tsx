@@ -1,34 +1,19 @@
 import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import type { ApiBook } from "../../../types/ApiBook";
+import type { ApiBook, Author, Rating } from "../../../types/ApiBook";
 import type { UserBookData } from "../../../types/UserBookData";
 import "./BookCard.css";
 
 interface BookCardProps {
 
-    book?: ApiBook; //Should be made required when real data is passed, remove "?" when that happens
+    book: ApiBook; //Should be made required when real data is passed, remove "?" when that happens
+    
 }
-
-// ONLY USED FOR TESTING PURPOSES!!
-const testBook: ApiBook = {
-    id: 1,
-    title: "The Hobbit",
-    image: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
-    authors: [
-        {
-            id: 1,
-            name: "J.R.R. Tolkien",
-        },
-    ],
-    rating: {
-        average: 0.9,
-    },
-};
 
 const TBR_STORAGE_KEY = "userBooks"; // Key used for storing TBR data in localStorage
 
-const getStoredBooks = (): UserBookData[] => { // Retrieves the list of books from localStorage, or returns an empty array if none are stored.
+export const getStoredBooks = (): UserBookData[] => { // Retrieves the list of books from localStorage, or returns an empty array if none are stored.
     const storedBooks = localStorage.getItem(TBR_STORAGE_KEY); 
     return storedBooks ? JSON.parse(storedBooks) : []; // Parses the stored JSON string into an array of UserBookData objects, or returns an empty array if no data is found.
 };
@@ -40,7 +25,7 @@ const checkBookIsInTbr = (bookId: number) => {
 };
 
 
-const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean) => { // Updates the TBR status of a book in localStorage based on the provided book ID and whether it should be saved to TBR or not.
+export const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean, authors? : Author[], image? : string, title? : string, rating? : Rating) => { // Updates the TBR status of a book in localStorage based on the provided book ID and whether it should be saved to TBR or not.
     const storedBooks = getStoredBooks();
     const existingBook = storedBooks.find((storedBook) => storedBook.bookId === bookId);
 
@@ -51,13 +36,17 @@ const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean) => { // U
         storedBooks.push({
             bookId,
             status: shouldSaveToTbr ? "tbr" : "none",
+            authors: authors ?? [],
+            title: title ?? "",
+            image: image ?? "", // todo Add placeholder image
+            rating: rating,
         });
     }
 
     localStorage.setItem(TBR_STORAGE_KEY, JSON.stringify(storedBooks)); // Saves the updated list of books back to localStorage as a JSON string.
 };
 
-const BookCard = ({ book = testBook }: BookCardProps) => {   // "= testBook" is only used for testing purposes, should be removed when real API data is passed into BookCard
+const BookCard = ({ book }: BookCardProps) => {   // "= testBook" is only used for testing purposes, should be removed when real API data is passed into BookCard
     const navigate = useNavigate();
     const [liked, setLiked] = useState(checkBookIsInTbr(book.id));
 
@@ -110,7 +99,7 @@ const BookCard = ({ book = testBook }: BookCardProps) => {   // "= testBook" is 
                     aria-pressed={liked}
                     onClick={(event) => {
                         event.stopPropagation();
-                        updateBookTbrStatus(book.id, !liked);
+                        updateBookTbrStatus(book.id, !liked, book.authors, book.image, book.title, book.rating);
                         setLiked(!liked);
                     }}
                 >
