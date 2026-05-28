@@ -8,6 +8,7 @@ import { useBookFilters } from "../hooks/useBookFilters";                       
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
+import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
 import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
 import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
 import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
@@ -307,6 +308,7 @@ const HomePage = () => {
 
                     clearFilters = {clearFilters}
                 />
+                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>
 
             <Col>
