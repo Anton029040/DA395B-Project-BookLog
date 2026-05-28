@@ -287,7 +287,7 @@ const HomePage = () => {
 
                     authorSearch = {authorSearch}
                     setAuthorSearch = {setAuthorSearch}
-                    authorError = {authoError}
+                    authorError = {authorError}
                     loadAuthors = {loadAuthors}
                     hasMoreAuthors = {hasMoreAuthors}
                     handleAuthorScroll = {handleAuthorScroll}

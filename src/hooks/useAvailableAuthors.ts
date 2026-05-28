@@ -24,7 +24,7 @@ export const useAvailableAuthors = () => {
     const [loadAuthors, setLoadAuthors] = useState(false);                  // loading indicator (fetching / finished fetching authors (API response))
     const [authorError, setAuthorError] = useState("");                     // error message (for display to the user)
 
-    const debouncedAuthorSearch = useDebounce(authorSearch, 300);           // adds the delay before sending API request (avoid every keystroke)
+    const debouncedAuthorSearch = useDebounce(authorSearch, 500);           // adds the delay before sending API request (avoid every keystroke)
 
     // localStorage state variables:
     const AUTHOR_CACHE_KEY = "Api-default-authors";                         // key for key-value pair in localStorage
@@ -169,7 +169,7 @@ export const useAvailableAuthors = () => {
                 return;
             }
 
-            const localMatches = defaultAuthors.filter((author) =>              // 1. check user input vs already-loaded / cached authors array
+            const localMatches = defaultAuthors.filter((author) =>              //  check user input vs already-loaded / cached authors array
                 normaliseText(author).includes(normaliseText(trimmedSearch))
             );
 
