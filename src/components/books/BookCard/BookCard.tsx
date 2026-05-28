@@ -28,7 +28,6 @@ const checkBookIsInTbr = (bookId: number) => {
 export const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean, authors? : Author[], image? : string, title? : string, rating? : Rating) => { // Updates the TBR status of a book in localStorage based on the provided book ID and whether it should be saved to TBR or not.
     const storedBooks = getStoredBooks();
     const existingBook = storedBooks.find((storedBook) => storedBook.bookId === bookId);
-
     
     if (existingBook) { // If the book already exists in storage, update its status based on whether it should be saved to TBR or not.
         existingBook.status = shouldSaveToTbr ? "tbr" : "none";

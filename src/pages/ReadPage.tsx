@@ -9,12 +9,14 @@ import { useDebounce } from "../hooks/useDebounce";
 import BookCard, { getStoredBooks } from "../components/books/BookCard/BookCard";
 import type { ApiBook, Author, Rating } from "../types/ApiBook";
 import "./ReadPage.css";
+import { getBookReviews } from "../hooks/useLocalStorage";
+import type { BookReview } from "../types/BookReview";
 
 // This is the page connected to the endpoint "/read"
 const ReadPage = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
-    const [ booksInTBR, setBooksInTBR ] = useState<ApiBook[]>([]);
+    const [ reviewedBooks, setReviewedBooks ] = useState<ApiBook[]>([]);
 
     const {                                                     // destructured values/functions from the hook
         // currently selected filters:                           
@@ -38,8 +40,7 @@ const ReadPage = () => {
 
     } = useBookFilters();
 
-    
-        // setting up the delays for the API requests for the user added filters
+    // setting up the delays for the API requests for the user added filters
     const debouncedQuery = useDebounce(query);
     const debouncedAuthors = useDebounce(selectedAuthors);
     const debouncedGenres = useDebounce(selectedGenres);
@@ -60,42 +61,47 @@ const ReadPage = () => {
         if(query) {
             console.log(query);
             // todo Search for books that is in TBR list
-            let savedBooks = getStoredBooks();
-            const tbrBooks: ApiBook[] = [];
+            let savedReviews = getBookReviews();
+            const reviewes: ApiBook[] = [];
 
-            for (let i = 0; i < savedBooks.length; i++) {
-                if (savedBooks[i].status === "tbr" && savedBooks[i].title.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
-                    const tbrBook: ApiBook = {
-                        id: savedBooks[i].bookId,
-                        image: savedBooks[i].image,
-                        title: savedBooks[i].title,
-                        rating: savedBooks[i].rating,
-                        authors: savedBooks[i].authors,
+            for (let i = 0; i < savedReviews.length; i++) {
+                if (savedReviews[i].book.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+                    const review: ApiBook = {
+                        id: savedReviews[i].book.id,
+                        image: savedReviews[i].book.image,
+                        title: savedReviews[i].book.title,
+                        rating: savedReviews[i].rating,
+                        authors: savedReviews[i].book.authors,
+                        description: savedReviews[i].book.description,
+                        number_of_pages: savedReviews[i].book.number_of_pages,
+                        publish_date: savedReviews[i].book.publish_date,
                     };
-                    tbrBooks.push(tbrBook);
+                    console.log("This it the rating");
+                    console.log(savedReviews[i].book.rating);
+                    reviewes.push(review);
                 }
             }
-            setBooksInTBR(tbrBooks);
+            setReviewedBooks(reviewes);
         } else {
-            let savedBooks = getStoredBooks();
-            const tbrBooks: ApiBook[] = [];
+            let savedReviews = getBookReviews();
+            const reviewes: ApiBook[] = [];
 
-            for (let i = 0; i < savedBooks.length; i++) {
-                if (savedBooks[i].status === "tbr") {
-                    const tbrBook: ApiBook = {
-                        id: savedBooks[i].bookId,
-                        image: savedBooks[i].image,
-                        title: savedBooks[i].title,
-                        rating: savedBooks[i].rating,
-                        authors: savedBooks[i].authors,
-                    };
-                    tbrBooks.push(tbrBook);
-                }
+            for (let i = 0; i < savedReviews.length; i++) {
+
+                const review: ApiBook = {
+                    id: savedReviews[i].book.id,
+                    image: savedReviews[i].book.image,
+                    title: savedReviews[i].book.title,
+                    rating: savedReviews[i].rating,
+                    authors: savedReviews[i].book.authors,
+                    description: savedReviews[i].book.description,
+                    number_of_pages: savedReviews[i].book.number_of_pages,
+                    publish_date: savedReviews[i].book.publish_date,
+                };
+                reviewes.push(review);
             }
-            setBooksInTBR(tbrBooks);
+            setReviewedBooks(reviewes);
         }
-        
-
     }, [query]);
 
 
@@ -123,7 +129,7 @@ const ReadPage = () => {
                 />
             </div>
             <div className="book-card-section">
-                {booksInTBR.map((book) => (
+                {reviewedBooks.map((book) => (
                     <BookCard 
                     key={book.id}
                     book={book}/> 

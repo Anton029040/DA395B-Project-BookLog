@@ -1,32 +1,33 @@
+import type { BookReview } from "../types/BookReview";
+
 export {};  /* placeholder for testing */
+
+
 
 /**
  * Method for saving a book/review. 
  * @param review The review of the book
  * @param rating The rating of the book
- * @param bookId The id of the book to be reviewd
+ * @param book The data of the book
  * @returns True if saving the review was succesfful. False if not.
  */
-export function saveReview(review : string, rating : string, bookId : number) {
+export function saveReview(review : string, rating : string, book : BookReview) {
+    console.log(book.rating);
     let newReview = {
         review, 
         rating, 
-        bookId
+        book,
     };
 
     let successfulSave = false;
     const key = "bookReviews";
     const reviews = getList(key);
-    console.log(reviews);
-    console.table(reviews);
-    console.log("This is the new review");
-
 
     let found = false;
 
     for (let i = 0; i < reviews.length; i++) {
         console.log(reviews[i]);
-        if (reviews[i].bookId === bookId) {
+        if (reviews[i].book.id === book.id) {
             reviews[i] = newReview;
             found = true;
             successfulSave = true;
@@ -55,7 +56,7 @@ export function getReview(bookId : string) {
     let review = "";
 
     for (let i = 0; i < reviews.length; i++) {
-        if (reviews[i].bookId === Number(bookId)) {
+        if (reviews[i].book.id === Number(bookId)) {
             review = reviews[i].review;
             break;
         }
@@ -75,13 +76,19 @@ export function getRating(bookId : string) {
     let rating = "";
 
     for (let i = 0; i < reviews.length; i++) {
-        if (reviews[i].bookId === Number(bookId)) {
+        if (reviews[i].book.id === Number(bookId)) {
             rating = reviews[i].rating;
             break;
         }
     }
 
     return rating;   
+}
+
+export function getBookReviews() {
+    const key = "bookReviews";
+    let reviews = getList(key);
+    return reviews;
 }
 
 /**
