@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.VITE_BIG_BOOK_API_URL;                         
 
 // Converting request parameters into safe console log object (avoid logging our API key)
 const paramsForLog = (searchParams: URLSearchParams) => {
-    const logParams = object.fromEntries(searchParams.entries());
+    const logParams = Object.fromEntries(searchParams.entries());
 
     if (logParams["api-key"]) {                                                         // if the console log shows includes our api key
         logParams["api-key"] = "**hiden_api***";                                        // <- change it to this text 

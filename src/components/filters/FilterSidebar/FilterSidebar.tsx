@@ -1,5 +1,6 @@
 import { Accordion, Button, Form } from "react-bootstrap";
 
+import AuthorFilter from "./AuthorFilter";
 import "./FilterSidebar.css";
 
 
@@ -13,6 +14,7 @@ interface FilterSidebarProps{
     availableAuthors: string[];                     // all author names ie. ["J.R.R. Tolkien", "J.K. Rowling"]
     availableGenres: string[];                      // all available genres
     authorSearch: string;
+    authorError: string;
     
     // lists of the user's currently selected filters:
     selectedAuthors: string[];                              // currently selected authors
@@ -54,7 +56,7 @@ interface FilterSidebarProps{
         selectedLatestPublishYear,
 
         authorSearch,
-        setAuthorSearch,
+        authorError,,
         loadAuthors,
 
         toggleAuthor,
@@ -62,6 +64,7 @@ interface FilterSidebarProps{
         setSelectedRating,
         setEarliestPublishYear,
         setLatestPublishYear,
+        setAuthorSearch,
         clearFilters,
 
     }: FilterSidebarProps) => {     // <- end of parameters & start of component
