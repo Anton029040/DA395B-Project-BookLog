@@ -223,6 +223,7 @@ const HomePage = () => {
     // ============================================================= 
     useEffect(() => {
         let ignoreOldRequest = false;
+        const controller = new AbortController();                   // aborts old API requests (reduce API spam)
 
         // ==== loadBooks: BECAUSE USEEFFECT CANNOT BE ASYNCHRONOUS ====
         // fetches books from search-books & awaits a response
@@ -240,7 +241,7 @@ const HomePage = () => {
             try {
                 console.log("HomePage -> search-book params sent: ", bookSearchParams);
 
-                const result = await searchBooks(bookSearchParams);
+                const result = await searchBooks(bookSearchParams, controller.signal);
                 
                 // API returns nested arrays (TS type of ApiBook): [ [book], [book], ... ]
                 // flat() converts them into: [book, book, ... ] 
@@ -275,6 +276,7 @@ const HomePage = () => {
 
         return () => {
             ignoreOldRequest = true;
+            controller.abort();
         };
 
     }, [bookSearchParams]); 
@@ -306,7 +308,14 @@ const HomePage = () => {
                     setEarliestPublishYear = {setEarliestPublishYear}
                     setLatestPublishYear = {setLatestPublishYear}
 
-                    clearFilters = {clearFilters}
+                    // Issue with query staying after refresh/start 
+                    // -> this is due to Header writing: " navigate(`?query=${encodeURIComponent(query.trim())}`); "
+                    // -> which HomePage then reads back from the URL: " const query = searchParams.get("query")?.trim() ?? ""; "
+                    // Therefore clearFilters now needs to also remove the URL query:
+                    clearFilters = {() => {
+                        clearFilters;                                                       // resets the URL query to have no filters
+                        navigate("/");                                                      // makes sure we navigate back to the HomePage URL
+                    }}
                 />
                 <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>

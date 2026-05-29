@@ -19,7 +19,7 @@ const paramsForLog = (searchParams: URLSearchParams) => {
 /*  FETCHES MULTIPLE BOOKS -> Calls the API's "search books" endpoint using ONLY active user searches (search bar / filters).
       -> takes the chosen search/ filter/ sort options, turns them into URL query parameters, sends the
       request to the api, and returns the API response as a JSON. */
-export const searchBooks = async (params: SearchBookParams): Promise<SearchBooksResponse> => {
+export const searchBooks = async (params: SearchBookParams, signal?:AbortSignal): Promise<SearchBooksResponse> => {
     const searchParams = new URLSearchParams();                                         // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);                                            // adds our api key
     
@@ -74,7 +74,7 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
 
     // ====================== REQUEST TO API: ======================
     const url = `${BASE_URL}/search-books?${searchParams.toString()}`;                          // setting up URL with the chosen parameters    
-    const response = await fetch(url);                                                          // sending request and waiting for API response
+    const response = await fetch(url, { signal });                                              // waiting for API response & stoping old requests(don't spam API)
 
     if (!response.ok) {
         throw new Error(`bigBookAPI-> Book search failed, status: ${response.status}`);

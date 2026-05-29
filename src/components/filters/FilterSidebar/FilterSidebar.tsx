@@ -78,7 +78,7 @@ const FilterSidebar = ({
 }: FilterSidebarProps) => {     // <- end of parameters & start of component
 
     return (
-        <div className = "filter-sidebar"> {/* used for sidebars/secondary content */}
+        <div className = "filter-sidebar">                          {/* used for sidebars/secondary content */}
             <h2>Filters</h2>
             <Accordion alwaysOpen>                                  {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
