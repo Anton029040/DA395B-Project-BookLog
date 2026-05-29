@@ -224,6 +224,7 @@ const HomePage = () => {
                         navigate("/");                                                      // makes sure we navigate back to the HomePage URL
                     }}
                 />
+                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>
 
             <Col>
