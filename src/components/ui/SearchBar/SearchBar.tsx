@@ -12,10 +12,6 @@ const SearchBar = () => {
     const [query, setQuery] = useState("");
 
     function handleSearch() {
-        if (!query.trim()) {
-            alert("The searchfield is empty");
-            return;
-        }
         navigate(`?query=${encodeURIComponent(query.trim())}`);
     };
 
