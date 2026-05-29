@@ -7,24 +7,9 @@ import "./BookCard.css";
 
 interface BookCardProps {
 
-    book?: ApiBook; //Should be made required when real data is passed, remove "?" when that happens
+    book: ApiBook; 
 }
 
-// ONLY USED FOR TESTING PURPOSES!!
-const testBook: ApiBook = {
-    id: 1,
-    title: "The Hobbit",
-    image: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
-    authors: [
-        {
-            id: 1,
-            name: "J.R.R. Tolkien",
-        },
-    ],
-    rating: {
-        average: 0.9,
-    },
-};
 
 const TBR_STORAGE_KEY = "userBooks"; // Key used for storing TBR data in localStorage
 
@@ -57,7 +42,7 @@ const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean) => { // U
     localStorage.setItem(TBR_STORAGE_KEY, JSON.stringify(storedBooks)); // Saves the updated list of books back to localStorage as a JSON string.
 };
 
-const BookCard = ({ book = testBook }: BookCardProps) => {   // "= testBook" is only used for testing purposes, should be removed when real API data is passed into BookCard
+const BookCard = ({ book  }: BookCardProps) => { 
     const navigate = useNavigate();
     const [liked, setLiked] = useState(checkBookIsInTbr(book.id));
 

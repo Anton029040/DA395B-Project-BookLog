@@ -1,5 +1,5 @@
 // This is the page connected to the endpoint "/"
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
@@ -11,18 +11,16 @@ import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";  
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
-import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
+import BookGallery from "../components/books/BookGallery";
 
 
 // This is the page connected to the endpoint "/"
 const HomePage = () => {
-    const navigate = useNavigate();
-  
     /* ====================================================================================================================
         SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER
        ==================================================================================================================== */
     const [searchParams] = useSearchParams();
-    const query = searchParams.get("query") || "books";
+    const query = searchParams.get("query") || "";
 
     /* ==================================================================================================================== 
         SIDEBAR FILTER: THE USERS SELECTED FILTERS FOUND IN THE BODY 
@@ -155,27 +153,32 @@ const HomePage = () => {
 
     return(
         <Container fluid>
-            <Col xs = "auto" md = {3}>
-                <FilterSidebar
-                    availableAuthors = {availableAuthors}
-                    availableGenres = {availableGenres}
-                    authorSearch = {authorSearch}
-                    setAuthorSearch = {setAuthorSearch}
-                    loadAuthors = {loadAuthors}
-                    selectedAuthors = {selectedAuthors}
-                    selectedGenres = {selectedGenres}
-                    selectedRating = {selectedRating}
-                    selectedEarliestPublishYear = {selectedEarliestPublishYear}
-                    selectedLatestPublishYear = {selectedLatestPublishYear}
-                    toggleAuthor = {toggleAuthor}
-                    toggleGenre = {toggleGenre}
-                    setSelectedRating = {setSelectedRating}
-                    setEarliestPublishYear = {setEarliestPublishYear}
-                    setLatestPublishYear = {setLatestPublishYear}
-                    clearFilters = {clearFilters}
-                />
-                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
-            </Col>
+            <Row className="g-4">
+                <Col xs={12} md={3}>
+                    <FilterSidebar
+                        availableAuthors = {availableAuthors}
+                        availableGenres = {availableGenres}
+                        authorSearch = {authorSearch}
+                        setAuthorSearch = {setAuthorSearch}
+                        loadAuthors = {loadAuthors}
+                        selectedAuthors = {selectedAuthors}
+                        selectedGenres = {selectedGenres}
+                        selectedRating = {selectedRating}
+                        selectedEarliestPublishYear = {selectedEarliestPublishYear}
+                        selectedLatestPublishYear = {selectedLatestPublishYear}
+                        toggleAuthor = {toggleAuthor}
+                        toggleGenre = {toggleGenre}
+                        setSelectedRating = {setSelectedRating}
+                        setEarliestPublishYear = {setEarliestPublishYear}
+                        setLatestPublishYear = {setLatestPublishYear}
+                        clearFilters = {clearFilters}
+                    />
+                </Col>
+
+                <Col xs={12} md={9}>
+                    <BookGallery books={books} />
+                </Col>
+            </Row>
         </Container>
     );
 };
