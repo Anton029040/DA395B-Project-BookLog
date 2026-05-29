@@ -2,7 +2,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
-// filter sidebar imports:
 import { searchBooks } from "../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
 import { useBookFilters } from "../hooks/useBookFilters";                           // our hook that stores each filter state
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
