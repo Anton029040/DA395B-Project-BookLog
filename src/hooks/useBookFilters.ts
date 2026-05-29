@@ -25,15 +25,15 @@ export const useBookFilters = () => {
     */
     const toggleAuthor = (author: string) => {      // accepts an author name as a string
         setSelectedAuthors((previousAuthors) => {   // updates state (async), using callback version of setState    // <- TESTING: REMOVE "{" LATER
-            const updatedAuthors =                      // <- TESTING: REMOVE LATER
+            const updatedAuthors =                  
                 previousAuthors.includes(author)    // is this author in our "filter" array?
                 ? previousAuthors.filter((item) =>  // true: "yes they have already added this author as a filter" then
                     (item !== author))              // remove the author from the "filter" array
                 : [...previousAuthors, author]      // false: add the author to the "filter" array
 
             console.log("updated selected authors: ", updatedAuthors);  // <- TESTING: REMOVE LATER
-            return updatedAuthors;                                      // <- TESTING: REMOVE LATER
-        });                                                             // <- TESTING: REMOVE "}" LATER
+            return updatedAuthors;                                      
+        });                                                             
     };
 
     // function to update(toggle) the selected genres based on the users selected/deselected filters.

@@ -173,24 +173,38 @@ const FilterSidebar = ({
                         <Form.Group>
                             <Form.Label>From:</Form.Label>
                             <Form.Control                                 
-                                type = "number" 
+                                type="text"
+                                inputMode="numeric"
+                                maxLength={4}  
                                 placeholder = "ex. 1882"
                                 value = {selectedEarliestPublishYear ?? ""}  
-                                onChange = {(event) => setEarliestPublishYear(
-                                    event.target.value === "" ? undefined : Number(event.target.value))
-                                } 
+                                onChange={(event) => {
+                                    const value = event.target.value;
+
+                                    setEarliestPublishYear(/^\d{4}$/.test(value) 
+                                        ? Number(value) 
+                                        : undefined
+                                    );
+                                }} 
                             />
                         </Form.Group>
 
                         <Form.Group>
                             <Form.Label>To:</Form.Label>
                             <Form.Control                                 
-                                type = "number" 
+                                type="text"
+                                inputMode="numeric"
+                                maxLength={4} 
                                 placeholder = "ex. 2026"
                                 value = {selectedLatestPublishYear ?? ""}  
-                                onChange = {(event) => setLatestPublishYear(
-                                    event.target.value === "" ? undefined : Number(event.target.value))
-                                } 
+                                onChange={(event) => {
+                                    const value = event.target.value;
+
+                                    setLatestPublishYear(/^\d{4}$/.test(value) 
+                                        ? Number(value) 
+                                        : undefined
+                                    );
+                                }}  
                             />
                         </Form.Group>
                     </Accordion.Body>
