@@ -1,4 +1,4 @@
-// The search options sent to the api (for filtering and sorting) - a request/query to the api to retrieve information
+// The search options for the api (for filtering and sorting) - a request/query to the api to retrieve information
 
 /* ===================================
         Request / Query parameters

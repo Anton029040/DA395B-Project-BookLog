@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
-// re-useable logic for adding a delay to a users api request (to minimize api calls)
-export const useDebounce = <T, >(value: T, ) => {
+// adds a delay to a users input (changing value) before triggering api logic (to minimize api calls)
+export const useDebounce = <T, >(value: T, delay = 300) => {
     const [delayValue, setDelayValue] = useState(value);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setDelayValue(value);
-        }, 500);                                // hardcoded delay of 500ms
+        }, delay);                                // hardcoded delay of 300ms
 
         return () => {
-            clearTimeout(timer);                // clear old timer if value changes before 500ms
+            clearTimeout(timer);                  // clear old timer if value changes before 500ms
         };
 
-    }, [value]);
+    }, [value, delay]);
 
     return delayValue;
 };
