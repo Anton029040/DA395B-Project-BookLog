@@ -12,6 +12,7 @@ import { starsToRating } from "../utils/starsToRating";                         
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
 import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
+import { bookGenres } from "../types/BookGenres";
 
 
 // This is the page connected to the endpoint "/"
@@ -66,38 +67,7 @@ const HomePage = () => {
     const debouncedLatestPublishYear = useDebounce(selectedLatestPublishYear);
 
     // These are hardcoded genres, the API endpoint does not return genres, only the single-book endpoint does. 
-    const availableGenres = [
-        "adventure",
-        "art",
-        "biography",
-        "business",
-        "children",
-        "comedy",
-        "crime",
-        "drama",
-        "economics",
-        "fantasy",
-        "historical fiction",
-        "history",
-        "horror",
-        "memoir",
-        "mystery",
-        "music",
-        "nonfiction",
-        "philosophy",
-        "poetry",
-        "politics",
-        "programming",
-        "psychology",
-        "religion",
-        "romance",
-        "science",
-        "science fiction",
-        "self-help",
-        "technology",
-        "thriller",
-        "young adult",
-    ];
+    const availableGenres = bookGenres;
 
     /* ==================================================================== 
                             useEffect() : React Hook
@@ -174,7 +144,6 @@ const HomePage = () => {
                     setLatestPublishYear = {setLatestPublishYear}
                     clearFilters = {clearFilters}
                 />
-                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>
         </Container>
     );

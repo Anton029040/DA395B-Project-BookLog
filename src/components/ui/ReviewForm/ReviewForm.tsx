@@ -3,25 +3,26 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import "./ReviewForm.css";
+import type { BookReview } from '../../../types/BookReview';
 import { getRating, getReview, removeReview, saveReview } from '../../../hooks/useLocalStorage';
 
 type ReviewFormProps = {
-    id?: string;
+    book : BookReview;
 };
 
 /* Component that contains the input fields of a review. Contains a textarea for writing a review / seeing an old one.
    Also contains a dropdown menu where user can pick between 1-5 stars to give a book. There is also a submit button
 */
-const ReviewForm = ({ id }: ReviewFormProps) => {
+const ReviewForm = ({ book }: ReviewFormProps) => {
     const [review, setReview] = useState("");
     const [rating, setRating] = useState("0");
 
     useEffect (() => {
-        if (id) {
-            setRating(getRating(id));
-            setReview(getReview(id));
+        if (book.id) {
+            setRating(getRating(book.id.toString()));
+            setReview(getReview(book.id.toString()));
         }
-    }, [id]);
+    }, [book.id]);
 
     /* Function for doing controls before a book review is saved */
     function onSubmit() {
@@ -30,13 +31,13 @@ const ReviewForm = ({ id }: ReviewFormProps) => {
             alert("The book needs to have a rating before marking it as read");
             return;
         }
-        saveReview(review, rating, Number(id));
+        saveReview(review, rating, book);
     }
 
     function clearReview() {
         setRating("0");
         setReview("");
-        removeReview(Number(id));
+        removeReview(book.id);
     }
 
     return (
