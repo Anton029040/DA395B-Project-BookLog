@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import type { ApiBook } from "../../../types/ApiBook";
+import type { ApiBook, Author, Rating } from "../../../types/ApiBook";
 import type { UserBookData } from "../../../types/UserBookData";
 import "./BookCard.css";
 
@@ -13,7 +13,7 @@ interface BookCardProps {
 
 const TBR_STORAGE_KEY = "userBooks"; // Key used for storing TBR data in localStorage
 
-const getStoredBooks = (): UserBookData[] => { // Retrieves the list of books from localStorage, or returns an empty array if none are stored.
+export const getStoredBooks = (): UserBookData[] => { // Retrieves the list of books from localStorage, or returns an empty array if none are stored.
     const storedBooks = localStorage.getItem(TBR_STORAGE_KEY); 
     return storedBooks ? JSON.parse(storedBooks) : []; // Parses the stored JSON string into an array of UserBookData objects, or returns an empty array if no data is found.
 };
@@ -25,10 +25,9 @@ const checkBookIsInTbr = (bookId: number) => {
 };
 
 
-const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean) => { // Updates the TBR status of a book in localStorage based on the provided book ID and whether it should be saved to TBR or not.
+export const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean, authors? : Author[], image? : string, title? : string, rating? : Rating) => { // Updates the TBR status of a book in localStorage based on the provided book ID and whether it should be saved to TBR or not.
     const storedBooks = getStoredBooks();
     const existingBook = storedBooks.find((storedBook) => storedBook.bookId === bookId);
-
     
     if (existingBook) { // If the book already exists in storage, update its status based on whether it should be saved to TBR or not.
         existingBook.status = shouldSaveToTbr ? "tbr" : "none";
@@ -36,6 +35,10 @@ const updateBookTbrStatus = (bookId: number, shouldSaveToTbr: boolean) => { // U
         storedBooks.push({
             bookId,
             status: shouldSaveToTbr ? "tbr" : "none",
+            authors: authors ?? [],
+            title: title ?? "",
+            image: image ?? "", // todo Add placeholder image
+            rating: rating,
         });
     }
 
@@ -95,7 +98,7 @@ const BookCard = ({ book  }: BookCardProps) => {
                     aria-pressed={liked}
                     onClick={(event) => {
                         event.stopPropagation();
-                        updateBookTbrStatus(book.id, !liked);
+                        updateBookTbrStatus(book.id, !liked, book.authors, book.image, book.title, book.rating);
                         setLiked(!liked);
                     }}
                 >

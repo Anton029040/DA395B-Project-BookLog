@@ -3,6 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
+// components imports:
+import  BookGallery  from "../components/books/BookGallery";
+
 // filter sidebar imports:
 import { searchBooks } from "../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
 import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
@@ -11,8 +14,7 @@ import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";  
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
-import BookGallery from "../components/books/BookGallery";
-
+import { bookGenres } from "../types/BookGenres";
 
 // This is the page connected to the endpoint "/"
 const HomePage = () => {
@@ -64,38 +66,7 @@ const HomePage = () => {
     const debouncedLatestPublishYear = useDebounce(selectedLatestPublishYear);
 
     // These are hardcoded genres, the API endpoint does not return genres, only the single-book endpoint does. 
-    const availableGenres = [
-        "adventure",
-        "art",
-        "biography",
-        "business",
-        "children",
-        "comedy",
-        "crime",
-        "drama",
-        "economics",
-        "fantasy",
-        "historical fiction",
-        "history",
-        "horror",
-        "memoir",
-        "mystery",
-        "music",
-        "nonfiction",
-        "philosophy",
-        "poetry",
-        "politics",
-        "programming",
-        "psychology",
-        "religion",
-        "romance",
-        "science",
-        "science fiction",
-        "self-help",
-        "technology",
-        "thriller",
-        "young adult",
-    ];
+    const availableGenres = bookGenres;
 
     /* ==================================================================== 
                             useEffect() : React Hook
