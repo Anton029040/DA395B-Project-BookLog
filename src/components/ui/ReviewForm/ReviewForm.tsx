@@ -41,7 +41,7 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
     }
 
     return (
-        <Form className='container'>
+        <Form className='review-form-container'>
             {/* Textarea. The component is taken from Bootstrap */}
             <FloatingLabel className = "text-area-label" controlId="reviewTextArea" label="Review">
                 <Form.Control

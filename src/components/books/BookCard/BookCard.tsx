@@ -56,8 +56,6 @@ const BookCard = ({ book }: BookCardProps) => {   // "= testBook" is only used f
     // Convert rating from 0-1 scale to 0-5 scale and format it. 
     const rating = book.rating?.average ? `${(book.rating.average * 5).toFixed(1)} / 5` : "No rating";
 
-
-
     return (
         <Card
             className="book-card"

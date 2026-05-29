@@ -13,7 +13,7 @@ import type { ApiBook } from "../types/ApiBook";                                
 import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
 import { bookGenres } from "../types/BookGenres";
 
-
+// Update these to JSDOC comments
 // ============================ PAGE: HOMEPAGE  ============================ 
 // -> controls all components and elements on the homepage endpoint: "/"
 // -> Header search bar uses the URL query parameter called "query".
@@ -58,6 +58,7 @@ const HomePage = () => {
 
     } = useBookFilters();
     
+    // TODO: move this to filterSidebar
     // ========= DESTRUCTURED VALUES/FUNCTIONS FROM THE HOOK useAvailableAuthors ==========  
     // ====================== aka: author search for filter sidebar =======================
     const {
@@ -164,6 +165,10 @@ const HomePage = () => {
                 console.log("HomePage -> flattened books returned: ", flattenedBooks);
 
             } catch (error) {
+                if (error instanceof DOMException && error.name === "AbortError") { // if we correctly abort sending extra api requests (which we want)
+                    return;                                                         // then it doesn't need to be an error message
+                }
+
                 console.log("HomePage -> could not load books: ", error);
 
                 if (!ignoreOldRequest) {
@@ -188,50 +193,61 @@ const HomePage = () => {
     }, [bookSearchParams]); 
 
     return(
-        <Container fluid>
-            <Col xs = "auto" md = {3}>
-                <FilterSidebar
-                    availableAuthors = {availableAuthors}
-                    availableGenres = {availableGenres}
+        <div className="container-fluid">
+            <div className="row align-items-start">
+                <div className="col-md-4">
+                    <FilterSidebar
+                        availableAuthors = {availableAuthors}
+                        availableGenres = {availableGenres}
 
-                    authorSearch = {authorSearch}
-                    setAuthorSearch = {setAuthorSearch}
-                    authorError = {authorError}
-                    loadAuthors = {loadAuthors}
-                    hasMoreAuthors = {hasMoreAuthors}
-                    handleAuthorScroll = {handleAuthorScroll}
+                        authorSearch = {authorSearch}
+                        setAuthorSearch = {setAuthorSearch}
+                        authorError = {authorError}
+                        loadAuthors = {loadAuthors}
+                        hasMoreAuthors = {hasMoreAuthors}
+                        handleAuthorScroll = {handleAuthorScroll}
 
-                    selectedAuthors = {selectedAuthors}
-                    selectedGenres = {selectedGenres}
-                    selectedRating = {selectedRating}
-                    selectedEarliestPublishYear = {selectedEarliestPublishYear}
-                    selectedLatestPublishYear = {selectedLatestPublishYear}
+                        selectedAuthors = {selectedAuthors}
+                        selectedGenres = {selectedGenres}
+                        selectedRating = {selectedRating}
+                        selectedEarliestPublishYear = {selectedEarliestPublishYear}
+                        selectedLatestPublishYear = {selectedLatestPublishYear}
 
-                    toggleAuthor = {toggleAuthor}
-                    toggleGenre = {toggleGenre}
+                        toggleAuthor = {toggleAuthor}
+                        toggleGenre = {toggleGenre}
 
-                    setSelectedRating = {setSelectedRating}
-                    setEarliestPublishYear = {setEarliestPublishYear}
-                    setLatestPublishYear = {setLatestPublishYear}
+                        setSelectedRating = {setSelectedRating}
+                        setEarliestPublishYear = {setEarliestPublishYear}
+                        setLatestPublishYear = {setLatestPublishYear}
 
-                    {/* Issue with query staying after refresh/start */}
-                    {/* -> this is due to Header writing: " navigate(`?query=${encodeURIComponent(query.trim())}`); " */}
-                    {/* -> which HomePage then reads back from the URL: " const query = searchParams.get("query")?.trim() ?? ""; " */}
-                    {/* Therefore clearFilters now also remove the URL query and navigates to HomePage URL: */}
-                    clearFilters = {() => {
-                        clearFilters;
-                        navigate("/");
-                    }}
-                />
-                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
-            </Col>
+                        clearFilters = {() => {
+                            clearFilters;
+                            navigate("/");
+                        }}
+                    />
+                </div>
 
-            <Col>
-                {loadingBooks && <p>Loading books...</p>}
-                {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
-                {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
-            </Col>
-        </Container>
+                <div className="col-md-8">
+
+                    <div className = "row align-items-start">
+
+                        <div className = "col-12">
+                            {loadingBooks && <p>Loading books...</p>}
+                            {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
+                            {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
+                        </div>
+                        
+                        {books.map((book) => (
+                            <div className = "col-md-6" >
+                                <BookCard key={book.id} book={book} />
+                            </div>
+                        ))}  
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
     );
 };
 

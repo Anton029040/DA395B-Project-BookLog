@@ -79,7 +79,7 @@ const FilterSidebar = ({
 
     return (
         <div className = "filter-sidebar">                          {/* used for sidebars/secondary content */}
-            <h2>Filters</h2>
+            <h2>Filters <img src = "/src/assets/images/filter-icon.svg" alt = "Filter" className = "filter-icon"/></h2>
             <Accordion alwaysOpen>                                  {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
                 {/* ============= Authors ============= */}
@@ -214,7 +214,7 @@ const FilterSidebar = ({
 
             <Button
                 type = "button"
-                varian = "secondary"
+                variant = "secondary"
                 className = "mt-3"
                 onClick = {clearFilters}
             >

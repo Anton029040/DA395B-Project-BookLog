@@ -22,11 +22,6 @@ const paramsForLog = (searchParams: URLSearchParams) => {
 export const searchBooks = async (params: SearchBookParams, signal?:AbortSignal): Promise<SearchBooksResponse> => {
     const searchParams = new URLSearchParams();                                         // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);                                            // adds our api key
-    
-    // query = user input of type string -> the SEARCH BARs (in filter and header)
-    if (params.query?.trim()) {
-        searchParams.append("query", params.query.trim());                              // removes white spaces before and after the input text
-    }
 
     // selected AUTHORS: there can be more than 1
     if (params.authors?.length) {
@@ -69,6 +64,11 @@ export const searchBooks = async (params: SearchBookParams, signal?:AbortSignal)
     // unless otherwise specified, this shows 100 results per page -> can: load more/next page/previous page
     searchParams.append("number", String(params.number ?? 100));                                // how many books to return
     searchParams.append("offset", String(params.offset ?? 0));                                  // how many books to skip (pagination)
+    
+    // query = user input of type string -> the SEARCH BARs (in filter and header)
+    if (params.query?.trim()) {
+        searchParams.append("query", params.query.trim());                                      // removes white spaces before and after the input text
+    }
 
     console.log("bigBookAPI-> search-books params:", paramsForLog(searchParams));               // <- TESTING: REMOVE LATER
 
