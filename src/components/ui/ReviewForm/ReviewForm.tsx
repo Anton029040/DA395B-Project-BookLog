@@ -3,8 +3,8 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import "./ReviewForm.css";
-import { getRating, getReview, saveReview } from '../../../hooks/useLocalStorage';
 import type { BookReview } from '../../../types/BookReview';
+import { getRating, getReview, removeReview, saveReview } from '../../../hooks/useLocalStorage';
 
 type ReviewFormProps = {
     book : BookReview;
@@ -32,6 +32,12 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
             return;
         }
         saveReview(review, rating, book);
+    }
+
+    function clearReview() {
+        setRating("0");
+        setReview("");
+        removeReview(Number(id));
     }
 
     return (
@@ -71,6 +77,12 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
                 onClick={onSubmit} 
                 variant="primary"
             > Save as read</Button>
+
+            <Button 
+                className = "submit-button mb-3" 
+                onClick={clearReview} 
+                variant="primary"
+            > Remove review and rating</Button>
         </Form>
     )
 }
