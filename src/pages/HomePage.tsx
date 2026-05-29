@@ -12,6 +12,7 @@ import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REM
 import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
 import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
 import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
+import { bookGenres } from "../types/BookGenres";
 
 
 // ============================ PAGE: HOMEPAGE  ============================ 
@@ -78,102 +79,8 @@ const HomePage = () => {
     const debouncedEarliestPublishYear = useDebounce(selectedEarliestPublishYear, 300);
     const debouncedLatestPublishYear = useDebounce(selectedLatestPublishYear, 300);
 
-    // ======================= HARDCODED GENRES FOR THE FILTER SIDEBAR =======================  
-    // ============ the API endpoint does not provide an end-point to fetch these ============
-    const availableGenres = [
-        "action",
-        "adventure",
-        "anthropology",
-        "astronomy",
-        "archaeology",
-        "architecture",
-        "art",
-        "aviation",
-        "biography",
-        "biology",
-        "business",
-        "chemistry",
-        "children",
-        "classics",
-        "contemporary",
-        "cookbook",
-        "crafts",
-        "crime",
-        "dystopia",
-        "economics",
-        "education",
-        "engineering",
-        "environment",
-        "erotica",
-        "essay",
-        "fairy_tales",
-        "fantasy",
-        "fashion",
-        "feminism",
-        "fiction",
-        "finance",
-        "folklore",
-        "food",
-        "gaming",
-        "gardening",
-        "geography",
-        "geology",
-        "graphic_novel",
-        "health",
-        "historical",
-        "historical_fiction",
-        "history",
-        "horror",
-        "how_to",
-        "humor",
-        "inspirational",
-        "journalism",
-        "law",
-        "literary_fiction",
-        "literature",
-        "magical_realism",
-        "manga",
-        "martial_arts",
-        "mathematics",
-        "medicine",
-        "medieval",
-        "memoir",
-        "mystery",
-        "mythology",
-        "nature",
-        "nonfiction",
-        "novel",
-        "occult",
-        "paranormal",
-        "parenting",
-        "philosophy",
-        "physics",
-        "picture_book",
-        "poetry",
-        "politics",
-        "programming",
-        "psychology",
-        "reference",
-        "relationships",
-        "religion",
-        "romance",
-        "science_and_technology",
-        "science_fiction",
-        "self_help",
-        "short_stories",
-        "society",
-        "sociology",
-        "space",
-        "spirituality",
-        "sports",
-        "text_book",
-        "thriller",
-        "travel",
-        "true_crime",
-        "war",
-        "writing",
-        "young_adult",
-    ];
+    // These are hardcoded genres, the API endpoint does not return genres, only the single-book endpoint does. 
+    const availableGenres = bookGenres;
 
     // ============ BUILDING THE SEARCH-BOOKS PARAMS (OBJECT THAT GETS SENT TO API ============  
     //  this is what decides which filters get sent to searchBooks(), without it we would 
@@ -308,7 +215,6 @@ const HomePage = () => {
 
                     clearFilters = {clearFilters}
                 />
-                <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
             </Col>
 
             <Col>
