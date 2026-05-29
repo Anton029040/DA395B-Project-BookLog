@@ -87,12 +87,13 @@ const ReadPage = () => {
             const reviewes: ApiBook[] = [];
 
             for (let i = 0; i < savedReviews.length; i++) {
+                console.log(savedReviews[i].book.rating);
 
                 const review: ApiBook = {
                     id: savedReviews[i].book.id,
                     image: savedReviews[i].book.image,
                     title: savedReviews[i].book.title,
-                    rating: savedReviews[i].rating,
+                    rating: savedReviews[i].book.rating,
                     authors: savedReviews[i].book.authors,
                     description: savedReviews[i].book.description,
                     number_of_pages: savedReviews[i].book.number_of_pages,

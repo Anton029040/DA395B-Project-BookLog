@@ -51,12 +51,14 @@ export function saveReview(review : string, rating : string, book : BookReview) 
  * @returns True if saving the review was succesfful. False if not.
  */
 export function removeReview(bookId : number) {
+    console.log(bookId);
     const key = "bookReviews";
     const reviews = getList(key);
+    console.log(reviews);
     let removed = false;
 
     for (let i = 0; i < reviews.length; i++) {
-        if (reviews[i].bookId === bookId) {
+        if (reviews[i].book.id === bookId) {
             reviews.splice(i, 1);
             
             removed = true;

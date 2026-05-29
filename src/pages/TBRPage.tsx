@@ -81,6 +81,8 @@ const TBRPage = () => {
 
             for (let i = 0; i < savedBooks.length; i++) {
                 if (savedBooks[i].status === "tbr") {
+                    console.log(savedBooks[i].rating);
+
                     const tbrBook: ApiBook = {
                         id: savedBooks[i].bookId,
                         image: savedBooks[i].image,

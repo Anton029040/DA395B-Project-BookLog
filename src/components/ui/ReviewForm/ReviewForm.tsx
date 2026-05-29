@@ -37,7 +37,7 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
     function clearReview() {
         setRating("0");
         setReview("");
-        removeReview(Number(id));
+        removeReview(book.id);
     }
 
     return (
