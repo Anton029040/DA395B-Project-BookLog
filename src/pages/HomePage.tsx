@@ -214,13 +214,13 @@ const HomePage = () => {
                     setEarliestPublishYear = {setEarliestPublishYear}
                     setLatestPublishYear = {setLatestPublishYear}
 
-                    // Issue with query staying after refresh/start 
-                    // -> this is due to Header writing: " navigate(`?query=${encodeURIComponent(query.trim())}`); "
-                    // -> which HomePage then reads back from the URL: " const query = searchParams.get("query")?.trim() ?? ""; "
-                    // Therefore clearFilters now needs to also remove the URL query:
+                    {/* Issue with query staying after refresh/start */}
+                    {/* -> this is due to Header writing: " navigate(`?query=${encodeURIComponent(query.trim())}`); " */}
+                    {/* -> which HomePage then reads back from the URL: " const query = searchParams.get("query")?.trim() ?? ""; " */}
+                    {/* Therefore clearFilters now also remove the URL query and navigates to HomePage URL: */}
                     clearFilters = {() => {
-                        clearFilters;                                                       // resets the URL query to have no filters
-                        navigate("/");                                                      // makes sure we navigate back to the HomePage URL
+                        clearFilters;
+                        navigate("/");
                     }}
                 />
                 <BookCard /> {/* ONLY FOR TESTING PURPOSES, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard */}
