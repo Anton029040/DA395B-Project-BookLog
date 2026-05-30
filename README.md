@@ -32,8 +32,13 @@ The other frameworks considered while planning the website were Vue and Angular.
 
 ## References
 [1] ‘What are the advantages of React.js ?’, GeeksforGeeks. Accessed: May 30, 2026. [Online]. Available: https://www.geeksforgeeks.org/reactjs/what-are-the-advantages-of-react-js/
+
 [2] O. Cordos, ‘Best Frontend Frameworks 2026: Every Major JavaScript Framework You Need to Know’, QuartzDevs. Accessed: May 30, 2026. [Online]. Available: https://quartzdevs.com/resources/best-frontend-frameworks-2026-every-major-javascript-framework
+
 [3] ‘Angular Tutorial’, GeeksforGeeks. Accessed: May 30, 2026. [Online]. Available: https://www.geeksforgeeks.org/angular-js/angular-tutorial/
+
 [4] ‘What is Angular?’ Accessed: May 30, 2026. [Online]. Available: https://angular.dev/
+
 [5] ‘7 Reasons Why VueJS Is So Popular?’, GeeksforGeeks. Accessed: May 30, 2026. [Online]. Available: https://www.geeksforgeeks.org/blogs/7-reasons-why-vuejs-is-so-popular/
+
 [6] ‘Vue.js’. Accessed: May 30, 2026. [Online]. Available: https://vuejs.org/
