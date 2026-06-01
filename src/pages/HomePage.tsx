@@ -1,6 +1,7 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
+
 
 // filter sidebar imports:
 import { searchBooks } from "../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
@@ -8,11 +9,12 @@ import { useBookFilters } from "../hooks/useBookFilters";                       
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
-import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
 import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
 import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
 import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
 import { bookGenres } from "../types/BookGenres";
+import BookGallery from "../components/books/BookGallery/BookGallery";
+import "./HomePage.css";
 
 
 // ============================ PAGE: HOMEPAGE  ============================ 
@@ -24,8 +26,6 @@ import { bookGenres } from "../types/BookGenres";
 // -> selected checkboxes here are sent as filters to search-books.
 // =========================================================================
 const HomePage = () => {
-    const navigate = useNavigate();
-  
     // ================= SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER =================
     const [searchParams] = useSearchParams();                   // reads query from url ie. /?query=harry
     const query = searchParams.get("query")?.trim() ?? "";      // header search value, if string is empty -> no request sent
@@ -186,42 +186,48 @@ const HomePage = () => {
 
     }, [bookSearchParams]); 
 
+
     return(
-        <Container fluid>
-            <Col xs = "auto" md = {3}>
-                <FilterSidebar
-                    availableAuthors = {availableAuthors}
-                    availableGenres = {availableGenres}
+        <Container fluid className="home-page">
+            <Row>
+                <Col xs = {12} md = {2}>
+                    <FilterSidebar
+                        availableAuthors = {availableAuthors}
+                        availableGenres = {availableGenres}
 
-                    authorSearch = {authorSearch}
-                    setAuthorSearch = {setAuthorSearch}
-                    authorError = {authorError}
-                    loadAuthors = {loadAuthors}
-                    hasMoreAuthors = {hasMoreAuthors}
-                    handleAuthorScroll = {handleAuthorScroll}
+                        authorSearch = {authorSearch}
+                        setAuthorSearch = {setAuthorSearch}
+                        authorError = {authorError}
+                        loadAuthors = {loadAuthors}
+                        hasMoreAuthors = {hasMoreAuthors}
+                        handleAuthorScroll = {handleAuthorScroll}
 
-                    selectedAuthors = {selectedAuthors}
-                    selectedGenres = {selectedGenres}
-                    selectedRating = {selectedRating}
-                    selectedEarliestPublishYear = {selectedEarliestPublishYear}
-                    selectedLatestPublishYear = {selectedLatestPublishYear}
+                        selectedAuthors = {selectedAuthors}
+                        selectedGenres = {selectedGenres}
+                        selectedRating = {selectedRating}
+                        selectedEarliestPublishYear = {selectedEarliestPublishYear}
+                        selectedLatestPublishYear = {selectedLatestPublishYear}
 
-                    toggleAuthor = {toggleAuthor}
-                    toggleGenre = {toggleGenre}
+                        toggleAuthor = {toggleAuthor}
+                        toggleGenre = {toggleGenre}
 
-                    setSelectedRating = {setSelectedRating}
-                    setEarliestPublishYear = {setEarliestPublishYear}
-                    setLatestPublishYear = {setLatestPublishYear}
+                        setSelectedRating = {setSelectedRating}
+                        setEarliestPublishYear = {setEarliestPublishYear}
+                        setLatestPublishYear = {setLatestPublishYear}
 
-                    clearFilters = {clearFilters}
-                />
-            </Col>
+                        clearFilters = {clearFilters}
+                    />
+                </Col>
 
-            <Col>
-                {loadingBooks && <p>Loading books...</p>}
-                {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
-                {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
-            </Col>
+                <Col xs = {12} md = {10}>
+                    {loadingBooks && <p>Loading books...</p>}
+                    {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
+                    {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
+                    <div className="home-page__gallery">
+                        <BookGallery books={books} />
+                    </div>
+                </Col>
+            </Row>
         </Container>
     );
 };
