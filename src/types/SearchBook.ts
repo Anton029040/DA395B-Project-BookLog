@@ -1,4 +1,5 @@
 // The search options for the api (for filtering and sorting) - a request/query to the api to retrieve information
+import type { ApiBook } from "./ApiBook";
 
 /* ===================================
         Request / Query parameters
