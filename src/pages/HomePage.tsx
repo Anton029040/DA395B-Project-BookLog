@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
@@ -24,6 +24,7 @@ import "./HomePage.css";
 // -> selected checkboxes here are sent as filters to search-books.
 // =========================================================================
 const HomePage = () => {
+    const navigate = useNavigate();
     // ================= SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER =================
     const [searchParams] = useSearchParams();                   // reads query from url ie. /?query=harry
     const query = searchParams.get("query")?.trim() ?? "";      // header search value, if string is empty -> no request sent
@@ -239,7 +240,7 @@ const HomePage = () => {
                         
                         {books.map((book) => (
                             <div className = "col-md-6" >
-                                <BookCard key={book.id} book={book} />
+                                <BookGallery key={book.id} books={ [book] } />
                             </div>
                         ))}  
                     </div>
