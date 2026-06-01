@@ -1,6 +1,6 @@
 import { Col, Row } from "react-bootstrap";
-import type { ApiBook } from "../../types/ApiBook";
-import BookCard from "./BookCard/BookCard";
+import type { ApiBook } from "../../../types/ApiBook";
+import BookCard from "../BookCard/BookCard";
 
 interface BookGalleryProps {
     books: ApiBook[];
