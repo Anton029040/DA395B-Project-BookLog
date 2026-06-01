@@ -200,7 +200,7 @@ const FilterSidebar = ({
 
             <Button
                 type = "button"
-                varian = "secondary"
+                variant = "secondary"
                 className = "mt-3"
                 onClick = {clearFilters}
             >
