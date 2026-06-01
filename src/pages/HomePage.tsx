@@ -194,12 +194,12 @@ const HomePage = () => {
 
 
     return(
-        <div className="container-fluid">
-            <div className="row align-items-start">
-                <div className="col-md-4">
-                <FilterSidebar
-                    availableAuthors = {availableAuthors}
-                    availableGenres = {availableGenres}
+        <Container  className="home-page">
+            <Row>
+                <Col xs = {12} md = {2}>
+                    <FilterSidebar
+                        availableAuthors = {availableAuthors}
+                        availableGenres = {availableGenres}
 
                         authorSearch = {authorSearch}
                         setAuthorSearch = {setAuthorSearch}
@@ -225,30 +225,19 @@ const HomePage = () => {
                             clearFilters;
                             navigate("/");
                         }}
-                />
-                </div>
+                    />
+                </Col>
 
-                <div className="col-md-8">
-
-                    <div className = "row align-items-start">
-
-                        <div className = "col-12">
-                {loadingBooks && <p>Loading books...</p>}
-                {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
-                {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
-                        </div>
-                        
-                        {books.map((book) => (
-                            <div className = "col-md-6" >
-                                <BookGallery key={book.id} books={ [book] } />
-                            </div>
-                        ))}  
+                <Col xs = {12} md = {10}>
+                    {loadingBooks && <p>Loading books...</p>}
+                    {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
+                    {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
+                    <div className="home-page__gallery">
+                    <BookGallery books={books} />
                     </div>
-
-                </div>
-                
-            </div>
-        </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

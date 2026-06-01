@@ -63,46 +63,14 @@
 
 /* Medium screens */
 @media screen and (max-width: 900px) {
-    .filter-sidebar {
-        max-width: 170px;
-        padding-left: 8px;
-    }
+    
 
-    .filter-sidebar h2 {
-        font-size: 30px;
-    }
-
-    .filter-sidebar .accordion-button {
-        font-size: 16px;
-        padding: 16px 20px;
-    }
 }
 
 /* Small screens */
 @media screen and (max-width: 500px) {
-    .filter-sidebar {
-        max-width: 120px;
-        padding-left: 12px;
-    }
+  
 
-    .filter-sidebar h2 {
-        font-size: 26px;
-    }
-
-    .filter-sidebar .accordion-button {
-        font-size: 15px;
-        padding: 14px 18px;
-        word-break: normal;
-    }
-
-    .filter-sidebar .accordion-body {
-        padding: 10px;
-    }
-
-    .author-filter-list,
-    .genre-filter-list {
-        max-height: 220px;
-    }
 }
 
 
