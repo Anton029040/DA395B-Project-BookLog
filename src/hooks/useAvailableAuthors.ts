@@ -1,121 +1,288 @@
-import { useEffect, useState } from "react";   // useEffect = run code on changes, useState = stores states/values in the hook
+import { useEffect, useState, useMemo } from "react";   // Effect = run code on changes, State = stores states/values
 
 import { searchAuthors } from "../api/bigBookApi";                                  // fetch authors from external API (function)
-import { getUniqueValues, sortAuthorsAlphabetically } from "../utils/filterBooks";  // removes duplicates & sort alphabetically (helper functions)
+import { getUniqueValues, sortAuthorsAlphabetically, normaliseText } from "../utils/filterBooks";  // removes duplicates & sort alphabetically (helper functions)
 import { useDebounce } from "./useDebounce";                                        // delays api requests (to avoid spam for every key press)
 
+// ================= CUSTOM HOOK: useAvailableAuthors  =================  
+// -> Handles the author search field in the filter sidebar
+// -> calls ONLY the search-author endpoint (NEVER search-books)
+// -> stores available authors from the API
+// -> stores / loads error states
+// -> delays (debounce) API requests to avoid spam (we have 50/ day)
+// -> loads the first author page on app start, and more on scroll
+// =====================================================================
+export const useAvailableAuthors = () => {
+    // state variables:
+    const [authorSearch, setAuthorSearch] = useState("");                   // current USER INPUT text in the author filter text field
+    const [searchedAuthors, setSearchedAuthors] = useState<string[]>([]);   // AUTHORS from API -> typed search by name (authorSearch)
 
-// The hook expects to receive a string array of selected authors to know what authors are currently selected
-interface useAvailableAuthorProps {
-    selectedAuthors: string[];
-}
+    const [defaultAuthors, setDefaultAuthors] = useState<string[]>([]);     // main loaded author list (localStorage if available, expand list on scroll)
+    const [nextOffset, setNextOffset] = useState(0);                        // next offset for loading more defaultAuthors (might be capped at 200)
+    const [hasMoreAuthors, setHasMoreAuthors] = useState(true);             // flag for if the API has no more defaultAuthors to load (see cap)
 
-/* Hook responsible for fetching authors from the search-authors endpoint (FilterSidebar).
-    -> fetches / searches for authors from the API (also controls the author search field)
-    -> removes duplicate authors
-    -> sorts authors alphabetically
-    -> caches authors in localStorage
-    -> returns author search state to the component 
-    
-    on first run this should make an API request but once/if the author
-    information is in local storage, it should make 0 API requests */
-export const useAvailableAuthors = ({selectedAuthors,}: useAvailableAuthorProps) => {
+    const [loadAuthors, setLoadAuthors] = useState(false);                  // loading indicator (fetching / finished fetching authors (API response))
+    const [authorError, setAuthorError] = useState("");                     // error message (for display to the user)
 
-    const [authorSearch, setAuthorSearch] = useState("");                       // state: current text in the user input (search bar)
-    const [availableAuthors, setAvailableAuthors] = useState<string[]>([]);     // state: authors available for display in the checklist
-    const [loadAuthors, setLoadAuthors] = useState(false);                      // state: loading indicator (fetching / finished fetching authors)
+    const debouncedAuthorSearch = useDebounce(authorSearch, 500);           // adds the delay before sending API request (avoid every keystroke)
 
-    const debouncedAuthorSearch = useDebounce(authorSearch);                    // adds the delay before sending a request to the api
+    // localStorage state variables:
+    const AUTHOR_CACHE_KEY = "Api-default-authors";                         // key for key-value pair in localStorage
+    const PAGE_SIZE = 100;                                                  // allows max number of 100
+    const saveDefaultAuthorsToStorage = (authors: string[]) => {            // stores growing defaultAuthors list in localStorage (key and value pair)
+        localStorage.setItem(AUTHOR_CACHE_KEY, JSON.stringify(authors));    
+    };
 
-    /* IMPORTANT: helper function to fetch author pages from the API:
-        - the api returns limited number of authors per request (offsets and then merge the results together) */
-    const fetchAuthorPages = async (name: string) => {
-        const allAuthors: string[] = [];                                        // stores all fetched author names
-        const pageSize = 100;                                                   // max results per request (ux loading speed / rendering)
-        const offsets = [0, 100];                                               // pagination: fetch first 100 authors, then next 100
+    // final authors list state variable:
+    const mergeUniqueSortedAuthors = (currentAuthors: string[], newAuthors: string[]) => {  // receives 2 author arrays
+        return sortAuthorsAlphabetically(getUniqueValues([                                  // merges them, removes duplicates, and sorts alphabetically
+            ...currentAuthors,
+            ...newAuthors,
+        ]));
+    };
 
-        for (const offset of offsets) {                                         // loop through all pages
-            const data = await searchAuthors({                                  // call the API
-                name,                                                           // user typed input
-                number: pageSize,                                               // number of results to return
-                offset,                                                         // current page offset
-            });
+    // ============= IMPORTANT HELPER: loadDefaultAuthorPage() =============
+    // -> calls the search-author endpoint & loads ONE page (100 authors)
+    // -> NO author name sent (intentional)
+    // -> used for: App start and when user scrolls near the bottom
+    // =====================================================================
+    const loadDefaultAuthorPage = async (offset: number) => {
+        console.log("useAvailableAuthors-> Loading default authors:", {
+            number: PAGE_SIZE,
+            offset,
+        });
 
-            // retrieve only the authors name (not id) from the API (converts Author[] to string[])
-            const authorsFromCurrentPage = data.authors.map(                    
-                (author) => author.name
-            );
+        const result = await searchAuthors({
+            number: PAGE_SIZE,
+            offset,
+        });
 
-            allAuthors.push(...authorsFromCurrentPage);                         // add fetched authors to the master array
+        return result.authors.map((author) => author.name);
+    };
 
-            if (authorsFromCurrentPage.length < pageSize){                      // stop requesting more pages if the page returns < 100 authors
-                break;                                                          // -> we have already gotten all the authors
-            }
+    // ================ IMPORTANT HELPER: fetchAuthorsByName() ================
+    // -> calls the search-author endpoint based on USER INPUT (name parameter)
+    // -> only used when user types in the search bar in the filter sidebar.
+    // ========================================================================
+    const searchAuthorsByName = async (search: string) => {
+        console.log("useAvailableAuthors-> Searching authors by name:", {
+            name: search,
+            number: PAGE_SIZE,
+            offset: 0,
+        });
+
+        const result = await searchAuthors({
+            name: search,
+            number: PAGE_SIZE,
+            offset: 0,
+        });
+
+        return result.authors.map((author) => author.name);
+    };
+
+    // =========== IMPORTANT HELPER: loadMoreDefaultAuthors() ===========
+    // -> loads the next author page and appends unique authors
+    //      -> to both React and localStorage 
+    // ==================================================================
+    const loadMoreDefaultAuthors = async () => {
+        if (loadAuthors || !hasMoreAuthors) {                               // if authors are already loading or there are no more authors
+            return;                                                         // don't send a new API request
         }
 
-        return allAuthors;                                                      // the merged author list
-    }
+        setLoadAuthors(true);                                               // show the user we are fetching authors
+        setAuthorError("");                                                 // reset error messages
 
-    /* runs when components is first loaded or when the query changes
-        -> loading authors
-        -> checking localStorageCache
-        -> updating state */
-    useEffect(() =>{   
+        try {
+            const newAuthors = await loadDefaultAuthorPage(nextOffset);     // wait for the new authors to load and store them
 
-        const loadAuthors = async () => {                                       // useEffect cant be async hence this function
-
-            const storageKey = `authors-${debouncedAuthorSearch || "default"}`; // allows different searches to have their own lists in localStorage
-            const storedAuthors = localStorage.getItem(storageKey);             // retrieve cached authors from localStorage (strings ONLY)
-
-            if (storedAuthors) {                                                // if author exists in localStorage
-                const cachedAuthors: string[] = JSON.parse(storedAuthors);      // -> convert JSON string back to an array
-                
-                const newAllAuthorsList = sortAuthorsAlphabetically(            // merge lists: users author filters on top, and the rest below
-                    getUniqueValues([               
-                        ...selectedAuthors,                                     // this ensures that selected authors always remain visible
-                        ...cachedAuthors,
-                    ])
+            setDefaultAuthors((previousAuthors) => {                        // merge the previous authors with the newly fetched ones
+                const mergedAuthors = mergeUniqueSortedAuthors(
+                    previousAuthors,
+                    newAuthors
                 );
 
-                setAvailableAuthors(newAllAuthorsList);                         // store in state
-                return;                                                         // stop execution if author found, avoids unnecessary API requests
+                saveDefaultAuthorsToStorage(mergedAuthors);                 // save the new merged authors list to localStorage
+
+                return mergedAuthors;                                       // return the new merged list
+            });
+
+            setNextOffset((previousOffset) => previousOffset + PAGE_SIZE);  // change page starting point (like turning a page)
+
+            if (newAuthors.length < PAGE_SIZE) {                            // if there are < 100 authors on the new page, we have all the authors
+                setHasMoreAuthors(false);                                   // we change the flag so that we don't keep searching
             }
 
-            setLoadAuthors(true);                                               // show loading state (only needed if we want to notify user)
+        } catch (error) {
+            console.error("useAvailableAuthors-> Could not load default authors:", error);
+            setAuthorError("Could not load authors.");
 
-            try{                                                                // ensures loading state always stops, even on request failures
-                const authorsListFromApi = await fetchAuthorPages(              // fetch authors from API
-                    debouncedAuthorSearch
-                );
+        } finally {
+            setLoadAuthors(false);                                          // show the user we are NOT fetching authors                          
+        }
+    };
 
-                const uniqueSortedAuthors = sortAuthorsAlphabetically(          // merge selected & API authors, remove duplicates and sort
-                    getUniqueValues([
-                        ...selectedAuthors,
-                        ...authorsListFromApi,
-                    ])
-                );  
-                
-                setAvailableAuthors(uniqueSortedAuthors);                       // state: store processed authors (update visible authors in UI)
 
-                localStorage.setItem(                                           // save authors to localStorage (strings only hence conversion)
-                    storageKey,                                                 // -> this prevents repeated API requests for the same author
-                    JSON.stringify(uniqueSortedAuthors)
-                );
+    // ===================== useEffect() on App start =====================
+    // -> runs when component is first loaded
+    // -> calls the search-author endpoint OR localStorage
+    // -> updates authors in the filter sidebar:
+    //   -> if there are authors in localStorage, load them immediately & 
+    //      change offset based on the number of cached authors.
+    //          -> if not, fetch the first page from the API.
+    // =====================================================================
+    useEffect(() =>{
+        const storedAuthors = localStorage.getItem(AUTHOR_CACHE_KEY);          // checks localStorage
+
+        if (storedAuthors) {                                                   // if authors cached
+            const cachedAuthors: string[] = JSON.parse(storedAuthors);         // grab them
+
+            setDefaultAuthors(cachedAuthors);                                  // update our authors list for the filter
+            setNextOffset(cachedAuthors.length);                               // change page
+
+            console.log("useAvailableAuthors-> Loaded authors from localStorage:", {
+                count: cachedAuthors.length,
+                authors: cachedAuthors,
+            });
+
+            return;
+        }
+
+        loadMoreDefaultAuthors();                                               // gets the authors from the next page
+    }, []);
+
+    // ========= useEffect() when user types in the search field =========
+    // -> if search bar is empty: show the default author list
+    // -> if there is text in the input field:
+    //      -> first search localStorage
+    //      -> second, send request to API search-authors endpoint
+    //      -> merge the local and API results 
+    // ====================================================================
+    useEffect(() => {
+        let ignoreOldRequest = false;
+
+        const runAuthorSearch = async () => {
+            const trimmedSearch = debouncedAuthorSearch.trim();                 // removes whitespace from user input
+
+            if (trimmedSearch === "") {                                         // if the user erases their text
+                setSearchedAuthors([]);                                         // reset the state
+                setAuthorError("");                                             // reset the error state
+                return;
             }
 
-            finally{                                                            // always runs (success or error)!!!
-                setLoadAuthors(false);                                          // stops the loading state
+            const localMatches = defaultAuthors.filter((author) =>              //  check user input vs already-loaded / cached authors array
+                normaliseText(author).includes(normaliseText(trimmedSearch))
+            );
+
+            /* ----------------- IMPORTANT -> NEED TO DECIDE -------------------------------------------------------- 
+            this section is purely to reduce the number of API calls BUT it might miss some authors:
+            ie. if we have "j k rowling", in localstorage, when the user types "row" it finds "rowling" in
+            our cahce and so it doesn't make an API request. This potentially misses finding 
+            "Rowan Williams" or "Rowena Cory Daniells" if they aren't already in our cache. 
+            
+            remove this single if statement to ensure that we always make an API call: */
+
+            if (localMatches.length > 0) {                                      // if the author exists in local storage      
+                setSearchedAuthors(localMatches);                               // set the state (use them)
+                setAuthorError("");                                             // reset the error message
+
+                console.log("useAvailableAuthors-> Local author matches found. API not called:", {
+                    search: trimmedSearch,
+                    localMatches,
+                });
+
+                return;                                                         // stop
+            }
+            // --------- remove up to here only if we want the user to always find new authors on partial inputs -------
+
+            // if no author were found in local storage then this runs:
+            setLoadAuthors(true);                                               // show the user we are fetching authors
+            setAuthorError("");                                                 // reset author error
+
+            try {
+                const apiMatches = await searchAuthorsByName(trimmedSearch);    // send a request to the api with the user input
+
+                const mergedSearchResults = mergeUniqueSortedAuthors(           // add author to the localStorage (no duplicates)
+                    localMatches,
+                    apiMatches
+                );
+
+                if (!ignoreOldRequest) {                                        // if the request is outdated (new input since delay)
+                    setSearchedAuthors(mergedSearchResults);                    // then update the searchedAuthors
+
+                    if (mergedSearchResults.length === 0) {     
+                        setAuthorError("No authors found.");
+                    }
+                }
+
+                console.log("useAvailableAuthors-> No chached matches, API was called: ", {
+                    search: trimmedSearch,
+                    apiMatches,
+                });
+
+            } catch (error) {
+                console.error("useAvailableAuthors-> Author search failed:", error);
+
+                if (!ignoreOldRequest) {                                        // if there is an error and the request is outdated
+                    setSearchedAuthors(localMatches);                           // use the local storage authors list
+
+                    if (localMatches.length === 0) {
+                        setAuthorError("Could not search authors.");
+                    }
+                }
+
+            } finally {
+                if (!ignoreOldRequest) {                                        
+                    setLoadAuthors(false);                                      // stop the "loading authors" message to user
+                }
             }
         };
 
-        loadAuthors();                                                          // execute the async function
+        runAuthorSearch();                                                      // run the async function                                      
 
-    }, [debouncedAuthorSearch, selectedAuthors]);                               // re-run whenever the search or selected authors change
+        return () => {
+            ignoreOldRequest = true;                                            // ignore previous user input changes, use new input
+        };
 
-    return {                                                                    // allows components to access the values in this hook
-        availableAuthors,                                                       // authors shown in the accordion
-        loadAuthors,                                                            // loading state
-        authorSearch,                                                           // current search input value    
-        setAuthorSearch,                                                        // function for updating search input
+    }, [debouncedAuthorSearch, defaultAuthors]);
+
+    // ========= CHOOSES WHICH AUTHOR LIST TO DISPLAY =========
+    // -> if user is searching: show search results
+    // -> if search field is empty: show default list
+    // ========================================================
+    const visibleAuthors = useMemo(() => {                                      // memo stores calculated states
+        if (debouncedAuthorSearch.trim() !== "") {                              
+            return searchedAuthors;
+        }
+
+        return defaultAuthors;
+    }, [debouncedAuthorSearch, searchedAuthors, defaultAuthors]);
+
+    // ========= HANDLES SCROLLING IN THE AUTHOR FILTER LIST =========
+    // -> if user scrolls near the bottom of the page, load next page
+    // IMPORTANT: only works if the search field is empty =(
+    // ===============================================================
+    const handleAuthorScroll = (event: React.UIEvent<HTMLDivElement>) => {              // creates a div element
+        if (debouncedAuthorSearch.trim() !== "") {                              
+            return;
+        }
+
+        const element = event.currentTarget;                                            // if we are in the div (scroll list)
+
+        const isNearBottom =                                    
+            element.scrollTop + element.clientHeight >= element.scrollHeight - 20;
+
+        if (isNearBottom) {
+            loadMoreDefaultAuthors();
+        }
+    };
+
+    return {
+        authorSearch,
+        setAuthorSearch,
+        availableAuthors: visibleAuthors,
+        loadAuthors,
+        authorError,
+        hasMoreAuthors,
+        handleAuthorScroll,
     };
 };

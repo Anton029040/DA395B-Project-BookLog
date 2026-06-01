@@ -6,18 +6,13 @@
     justify-content: flex-start;
     align-items: flex-start;
     grid-row: 2/3;
-    grid-column: 1/2;
+    grid-column: 1/3;
 }
 
 main {
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: 7fr 3fr;
-}
-
-.filter-section {
-    grid-row: 1/3;
-    grid-column: 2/3;
 }
 
 h1 {
