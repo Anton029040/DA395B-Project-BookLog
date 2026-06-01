@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
@@ -7,11 +7,12 @@ import { useBookFilters } from "../hooks/useBookFilters";                       
 import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
 import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
 import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
-import BookCard from "../components/books/BookCard/BookCard";   //TEST ONLY, REMOVE WHEN REAL API DATA IS PASSED INTO BookCard
 import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
 import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
 import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
 import { bookGenres } from "../types/BookGenres";
+import BookGallery from "../components/books/BookGallery/BookGallery";
+import "./HomePage.css";
 
 // Update these to JSDOC comments
 // ============================ PAGE: HOMEPAGE  ============================ 
@@ -23,8 +24,6 @@ import { bookGenres } from "../types/BookGenres";
 // -> selected checkboxes here are sent as filters to search-books.
 // =========================================================================
 const HomePage = () => {
-    const navigate = useNavigate();
-  
     // ================= SEARCH BAR: USER INPUT FILED FOUND IN THE HEADER =================
     const [searchParams] = useSearchParams();                   // reads query from url ie. /?query=harry
     const query = searchParams.get("query")?.trim() ?? "";      // header search value, if string is empty -> no request sent
@@ -191,6 +190,7 @@ const HomePage = () => {
         };
 
     }, [bookSearchParams]); 
+
 
     return(
         <div className="container-fluid">
