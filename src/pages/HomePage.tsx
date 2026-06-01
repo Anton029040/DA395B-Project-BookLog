@@ -196,9 +196,9 @@ const HomePage = () => {
         <div className="container-fluid">
             <div className="row align-items-start">
                 <div className="col-md-4">
-                    <FilterSidebar
-                        availableAuthors = {availableAuthors}
-                        availableGenres = {availableGenres}
+                <FilterSidebar
+                    availableAuthors = {availableAuthors}
+                    availableGenres = {availableGenres}
 
                         authorSearch = {authorSearch}
                         setAuthorSearch = {setAuthorSearch}
@@ -224,7 +224,7 @@ const HomePage = () => {
                             clearFilters;
                             navigate("/");
                         }}
-                    />
+                />
                 </div>
 
                 <div className="col-md-8">
@@ -232,9 +232,9 @@ const HomePage = () => {
                     <div className = "row align-items-start">
 
                         <div className = "col-12">
-                            {loadingBooks && <p>Loading books...</p>}
-                            {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
-                            {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
+                {loadingBooks && <p>Loading books...</p>}
+                {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
+                {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
                         </div>
                         
                         {books.map((book) => (
