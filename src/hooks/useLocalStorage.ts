@@ -1,9 +1,5 @@
 import type { BookReview } from "../types/BookReview";
 
-export {};  /* placeholder for testing */
-
-
-
 /**
  * Method for saving a book/review. 
  * @param review The review of the book

@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
-import "./BookDetailsPage.css"
-import ReviewForm from "../components/ui/ReviewForm/ReviewForm";
-import ImageCarousel from "../components/ui/Carousel/ImageCarousel";
-import BookDetails from "../components/books/BookDetails/BookDetails";
+
+import ReviewForm from "../../components/ui/ReviewForm/ReviewForm";
+import ImageCarousel from "../../components/ui/Carousel/ImageCarousel";
+import BookDetails from "../../components/books/BookDetails/BookDetails";
 import { useEffect, useState } from "react";
-import { searchBook, searchSimilarBooks } from "../api/bigBookApi";
-import type { SimilarBook } from "../types/SimilarBook";
-import type { BookReview } from "../types/BookReview";
+import { searchBook, searchSimilarBooks } from "../../api/bigBookApi";
+import type { SimilarBook } from "../../types/SimilarBook";
+import type { BookReview } from "../../types/BookReview";
+
+import "./BookDetailsPage.css"
 
 // This is the page connected to the endpoint "/books/:bookId"
 const BookDetailsPage = () => {

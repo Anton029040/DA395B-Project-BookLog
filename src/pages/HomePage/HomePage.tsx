@@ -2,20 +2,18 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react"; // effect = run code when something changes/page loads, state = create & store state (variables)
 import { Col, Container, Row } from "react-bootstrap";
 
+import { searchBooks } from "../../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
+import { useBookFilters } from "../../hooks/useBookFilters";                           // our hook that stores each filter state
+import { starsToRating } from "../../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
+import { useAvailableAuthors } from "../../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
+import { useDebounce } from "../../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
+import FilterSidebar from "../../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
+import type { ApiBook } from "../../types/ApiBook";                                    // our typescript type (books fetched from the api)
+import type { SearchBookParams } from "../../types/SearchBook";                        // typescript type (book parameters)
+import { bookGenres } from "../../types/BookGenres";
+import BookGallery from "../../components/books/BookGallery/BookGallery";
 
-// filter sidebar imports:
-import { searchBooks } from "../api/bigBookApi";                                    // our API function that fetches books from the Big Book API
-import { useBookFilters } from "../hooks/useBookFilters";                           // our hook that stores each filter state
-import { starsToRating } from "../utils/starsToRating";                             // helper function: converts stars (1-5) to API rating (0-1)
-import { useAvailableAuthors } from "../hooks/useAvailableAuthors";                 // fetching and storing Api Authors
-import { useDebounce } from "../hooks/useDebounce";                                 // adds a delay to the api requests (for filter requests)
-import FilterSidebar from "../components/filters/FilterSidebar/FilterSidebar";      // the filter sidebar component
-import type { ApiBook } from "../types/ApiBook";                                    // our typescript type (books fetched from the api)
-import type { SearchBookParams } from "../types/SearchBook";                        // typescript type (book parameters)
-import { bookGenres } from "../types/BookGenres";
-import BookGallery from "../components/books/BookGallery/BookGallery";
 import "./HomePage.css";
-
 
 // ============================ PAGE: HOMEPAGE  ============================ 
 // -> controls all components and elements on the homepage endpoint: "/"
@@ -112,7 +110,7 @@ const HomePage = () => {
             ? { latestPublishYear: debouncedLatestPublishYear }  
             : {}),                                                                  // selected latest publish year
 
-        number: 100,                                                                // pagination: show 10 books at a time
+        number: 10,                                                                 // pagination: show 10 books at a time
         offset: 0,                                                                  // pagination: start from first result
 
     }),[        // <- dependencies start here: if any of these values change, re-run useEffect
@@ -223,10 +221,13 @@ const HomePage = () => {
                     {loadingBooks && <p>Loading books...</p>}
                     {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
                     {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
+
                     <div className="home-page__gallery">
                         <BookGallery books={books} />
                     </div>
+
                 </Col>
+                
             </Row>
         </Container>
     );

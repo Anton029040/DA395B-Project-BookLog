@@ -1,11 +1,16 @@
-import "./SearchBar.css"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import "./SearchBar.css"
+
 /**
- * Component for a searchbar. The search bar includes a searchfield for typing and 
- * a button for submit. Can also sumbit via enter. The value of the searchfield is stored
- * in the URI for global access.
+ * Component for a search bar. The search bar includes a search field for typing and a button for submit. 
+ * Can also submit via enter. The value of the search field is stored in the URI for global access.
+ * 
+ * @returns SearchBar component
+ * @description Component for a searchbar. The search bar includes a searchfield for typing and 
+ *              a button for submit. Can also sumbit via enter. The value of the searchfield is stored
+ *              in the URI for global access.
  */
 const SearchBar = () => {
     const navigate = useNavigate();
