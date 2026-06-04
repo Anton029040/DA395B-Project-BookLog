@@ -3,44 +3,12 @@ import { Accordion, Button, Form } from "react-bootstrap";
 import "./FilterSidebar.css";
 
 /** 
- * Props for the FilterSidebar component.
- * This interface defines the expected properties that the FilterSidebar component will receive from its parent component (HomePage).
- * It includes data for available authors and genres, the current state of the filters, and functions to update those states.
- * The FilterSidebar component uses these props to render the filter options and handle user interactions for filtering books based on 
- * authors, genres, ratings, and publish years.
+ * Type definition for the props passed to the FilterSidebar component. 
+ * It includes available authors and genres, current filter states, and functions to update those states.
  * 
- * @interface FilterSidebarProps
- * @property {string[]} availableAuthors - An array of all author names available for filtering.
- * @property {string[]} availableGenres - An array of all available genres for filtering.
- * 
- * @property {string} authorSearch - The current user input text in the author filter text field.
- * @property {React.Dispatch<React.SetStateAction<string>>} setAuthorSearch - A function to update the authorSearch state based on user input.
- * @property {boolean} loadAuthors - A flag indicating whether the authors are currently being loaded (used for displaying loading state).
- * @property {string} authorError - An error message for author filtering, displayed if there is an issue loading authors.
- * @property {boolean} hasMoreAuthors - A flag to check if there are more author pages available for loading (used for infinite scrolling).
- * @property {(event: React.UIEvent<HTMLDivElement>) => void} handleAuthorScroll - A function to handle the scroll event for the author list, 
- *           used to load more authors when scrolling.
- * 
- * @property {string[]} selectedAuthors - An array of currently selected authors for filtering.
- * @property {string[]} selectedGenres - An array of currently selected genres for filtering.
- * 
- * @property {number | undefined} selectedRating - The currently selected minimum rating for filtering (undefined if no rating is selected).
- * @property {number | undefined} selectedEarliestPublishYear - The currently selected minimum publish year for filtering (undefined if no year is selected).
- * @property {number | undefined} selectedLatestPublishYear - The currently selected maximum publish year for filtering (undefined if no year is selected).
- * 
- * @property {(author: string) => void} toggleAuthor - A function to add or remove an author from the selectedAuthors array when a user 
- *           checks/unchecks an author checkbox.
- * @property {(genre: string) => void} toggleGenre - A function to add or remove a genre from the selectedGenres array when a user 
- *           checks/unchecks a genre checkbox.
- * 
- * @property {React.Dispatch<React.SetStateAction<number | undefined>>} setSelectedRating - A function to set the selected minimum rating for filtering.
- * @property {React.Dispatch<React.SetStateAction<number | undefined>>} setEarliestPublishYear - A function to set the selected minimum publish year 
- *           for filtering.
- * @property {React.Dispatch<React.SetStateAction<number | undefined>>} setLatestPublishYear - A function to set the selected maximum publish year 
- *           for filtering.
- * @property {() => void} clearFilters - A function to reset/clear all the filters to their default state.
+ * This type definition ensures that the component receives the correct props and helps with type checking and autocompletion in TypeScript.
  */
-interface FilterSidebarProps{
+type FilterSidebarReturn = {
     availableAuthors: string[];                                         // all author names ie. ["J.R.R. Tolkien", "J.K. Rowling"]
     availableGenres: string[];                                          // all available genres
 
@@ -66,16 +34,7 @@ interface FilterSidebarProps{
     setLatestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>;   // set latest publish year filter
 
     clearFilters: () => void;                                           // reset/clear ALL the filters to default
-}
-
-// =================== SIDEBAR COMPONENT FOR FILTERING BOOKS ===================
-// -> Author input field ONLY updates authorSearch 
-//      -> handled by useAvailableAuthors hook
-//          -> uses search-author endpoint ONLY.
-// -> checking/unchecking author checkbox calls toggleAuthor
-//      -> updates selectedAuthors in HomePage
-//          -> selectedAuthors are then sent to search-books endpoint as filters
-// =============================================================================
+};
 
 /**
  * A React component that renders a sidebar with various filters for books, including author search, 
@@ -83,9 +42,10 @@ interface FilterSidebarProps{
  * The component uses Bootstrap's Accordion for collapsible filter sections and Form components for user input.
  * It also handles loading states and error messages for the author filter, as well as infinite scrolling for the author list.
  * 
- * @param props - The properties passed to the FilterSidebar component, including available authors and genres, current filter states, 
- *          and functions to update those states.
- * @returns {JSX.Element} - The rendered FilterSidebar component with all the filter options and functionality.
+ * @param {FilterSidebarReturn} props - The properties passed to the FilterSidebar component, including available authors and genres, current filter states, and functions to update those states.
+ * @returns {JSX.Element} The rendered FilterSidebar component.
+ * 
+ * Note: This component is designed to be used within a larger application, such as a book listing page, where it interacts with the parent component (HomePage) to manage the state of the filters and update the displayed books accordingly.
  */
 const FilterSidebar = ({
     // parameters:
@@ -114,7 +74,7 @@ const FilterSidebar = ({
 
     clearFilters,
 
-}: FilterSidebarProps) => {     // <- end of parameters & start of component
+}: FilterSidebarReturn) => {     // <- end of parameters & start of component
 
     return (
         <div className = "filter-sidebar"> {/* used for sidebars/secondary content */}
@@ -189,12 +149,12 @@ const FilterSidebar = ({
                 <Accordion.Item eventKey="2">
                     <Accordion.Header>Minimum Rating</Accordion.Header>
                     <Accordion.Body>
-                        {[1, 2, 3, 4, 5].map((rating) => (
+                        {[5, 4, 3, 2, 1].map((rating) => (
                             <Form.Check
                                 key = {rating}                                  
                                 type = "checkbox" 
                                 id = {`rating-${rating}`}                              
-                                label = {`${rating} star${rating > 1 ? "s" : ""}`}                                
+                                label = {"⭐".repeat(rating)}                                
                                 checked = {selectedRating === rating}   
                                 onChange = {() => setSelectedRating(
                                     selectedRating === rating ? undefined : rating)
@@ -248,5 +208,4 @@ const FilterSidebar = ({
         </div>
     );
 };
-
 export default FilterSidebar;

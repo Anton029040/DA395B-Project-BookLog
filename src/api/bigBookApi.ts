@@ -37,7 +37,7 @@ const paramsForLog = (searchParams: URLSearchParams) => {
  * @returns the API response as a JSON object, which includes the list of books matching the search 
  *          and filter criteria, as well as pagination info (available, number, offset).
  */
-export const searchBooks = async (params: SearchBookParams): Promise<SearchBooksResponse> => {
+export const searchBooks = async (params: SearchBookParams, signal?: AbortSignal): Promise<SearchBooksResponse> => {
     const searchParams = new URLSearchParams();                                         // built in JS class for creating and managing URL query params
     searchParams.append("api-key", API_KEY);                                            // adds our api key
     
@@ -73,7 +73,7 @@ export const searchBooks = async (params: SearchBookParams): Promise<SearchBooks
     console.log("bigBookAPI-> search-books params:", paramsForLog(searchParams));               // <- TESTING: REMOVE LATER
 
     // ====================== REQUEST TO API: ======================   
-    const response = await fetch(`${BASE_URL}/search-books?${searchParams.toString()}`);        // sending request and waiting for API response
+    const response = await fetch(`${BASE_URL}/search-books?${searchParams.toString()}`, { signal });  // sending request and waiting for API response
 
     if (!response.ok) { 
         throw new Error(`bigBookAPI-> Book search failed, status: ${response.status}`); 

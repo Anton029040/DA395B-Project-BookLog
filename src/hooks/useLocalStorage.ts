@@ -39,7 +39,7 @@ export function saveReview(review : string, rating : string, book : BookReview) 
     storeArray(key, reviews);
 
     return successfulSave;
-}
+};
 
 /**
  * Method for saving a book/review. 
@@ -69,7 +69,7 @@ export function removeReview(bookId : number) {
     }
 
     return removed;
-}
+};
 
 /**
  * Function that collects a review based on a books ID
@@ -89,7 +89,7 @@ export function getReview(bookId : string) {
     }
 
     return review;
-}
+};
 
 /**
  * Function that collects the rating based on a books ID
@@ -109,13 +109,13 @@ export function getRating(bookId : string) {
     }
 
     return rating;   
-}
+};
 
 export function getBookReviews() {
     const key = "bookReviews";
     let reviews = getList(key);
     return reviews;
-}
+};
 
 /**
  * Method for retrieving items from local storage
@@ -124,7 +124,7 @@ export function getBookReviews() {
 function getList(key : string) {
     let list = localStorage.getItem(key);
     return list ? JSON.parse(list) : [] ;
-}
+};
 
 /**
  * Method for saving 
@@ -134,4 +134,4 @@ function getList(key : string) {
 function storeArray(key : string, list : []) {
     let listToStore = JSON.stringify(list);
     localStorage.setItem(key, listToStore);
-}
+};

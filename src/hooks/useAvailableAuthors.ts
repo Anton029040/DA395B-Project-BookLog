@@ -21,7 +21,7 @@ type UseAvailableAuthorsReturn = {
     authorError: string;
     hasMoreAuthors: boolean;
     handleAuthorScroll: (event: React.UIEvent<HTMLDivElement>) => void;
-};
+}
 
 /**
  * Saves a list of author names to localStorage.
@@ -109,10 +109,7 @@ const loadAuthorsFromStorage = (): string[] | null => {
  * @param search - The search term to match against author names.
  * @returns An array of author names that match the search term.
  */
-const findLocalAuthorMatches = (
-    authors: string[],
-    search: string
-    ): string[] => {
+const findLocalAuthorMatches = (authors: string[], search: string): string[] => {
     return authors.filter((author) =>
         normaliseText(author).includes(normaliseText(search))
     );
@@ -139,7 +136,7 @@ const isNearBottomOfScroll = (element: HTMLDivElement): boolean => {
  * @property {string} authorSearch - The current text in the author search input.
  * @property {string[]} availableAuthors - The list of authors currently available for display based on the search and pagination.
  */
-const useAvailableAuthors = (): UseAvailableAuthorsReturn => {
+export const useAvailableAuthors = (): UseAvailableAuthorsReturn => {
     // state variables:
     const [authorSearch, setAuthorSearch] = useState("");                   // current USER INPUT text in the author filter text field
     const [searchedAuthors, setSearchedAuthors] = useState<string[]>([]);   // AUTHORS from API -> typed search by name (authorSearch)
@@ -372,5 +369,3 @@ const useAvailableAuthors = (): UseAvailableAuthorsReturn => {
         handleAuthorScroll,
     };
 };
-
-export default useAvailableAuthors;
