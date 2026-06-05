@@ -33,6 +33,13 @@ The other frameworks considered while planning the website were Vue and Angular.
 9. Wait until a link is showing the console. 
 10. Copy the link and search for it in the URL bar in a web browser, or hold CTRL while pressing the link.
 
+## OBS!!!
+- The API keys only have 50 API calls per key. If you run out of calls while using website, do the following:
+1. Go to .env file.
+2. Comment out the currently used API key by typing "#" before the API key
+3. Remove the "#" from another API key that has not already been used.
+4. If no keys work or if you run out of API calls, please contact us throguh Canvas messaging
+
 ## References
 [1] ‘What are the advantages of React.js ?’, GeeksforGeeks. Accessed: May 30, 2026. [Online]. Available: https://www.geeksforgeeks.org/reactjs/what-are-the-advantages-of-react-js/
 
