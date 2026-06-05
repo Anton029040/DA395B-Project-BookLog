@@ -67,7 +67,7 @@ export const searchBooks = async (params: SearchBookParams, signal?: AbortSignal
     if (params.sortDirection) { searchParams.append("sort-direction", params.sortDirection); }
 
     // unless otherwise specified, this shows 10 results per page -> can: load more/next page/previous page
-    searchParams.append("number", String(params.number ?? 10));                                 // how many books to return
+    searchParams.append("number", String(params.number ?? 40));                                 // how many books to return
     searchParams.append("offset", String(params.offset ?? 0));                                  // how many books to skip (pagination)
 
     console.log("bigBookAPI-> search-books params:", paramsForLog(searchParams));               // <- TESTING: REMOVE LATER

@@ -4,7 +4,6 @@ import { searchAuthors } from "../api/bigBookApi";                              
 import { getUniqueValues, sortAuthorsAlphabetically, normaliseText } from "../utils/filterBooks";  // removes duplicates & sort alphabetically (helper functions)
 import { useDebounce } from "./useDebounce";                                        // delays api requests (to avoid spam for every key press)
 
-
 const AUTHOR_CACHE_KEY = "Api-default-authors"; // key for key-value pair in localStorage
 const PAGE_SIZE = 100;  // allows 100 authors per API request(default loading + search)-> max allowed by the API -> fewer requests, more authors per request
 

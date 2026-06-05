@@ -105,7 +105,7 @@ const HomePage = () => {
             ? { latestPublishYear: selectedLatestPublishYear }  
             : {}),                                                                  // selected latest publish year
 
-        number: 10,                                                                 // pagination: show 10 books at a time
+        number: 100,                                                                // pagination: show 100 books at a time
         offset: 0,                                                                  // pagination: start from first result
 
     }),[        // <- dependencies start here: if any of these values change, re-run useEffect

@@ -20,7 +20,7 @@ interface BookGalleryProps {
  * @param maxBooks - The maximum number of books to display (default is 12).
  * @returns {JSX.Element} - The rendered book gallery.
  */
-const BookGallery = ({ books, maxBooks = 12 }: BookGalleryProps) => {
+const BookGallery = ({ books, maxBooks = 1000 }: BookGalleryProps) => {
     const popularBooks = [...books] 
         .sort((firstBook, secondBook) => {
             const firstRating = firstBook.rating?.average ?? 0; 
