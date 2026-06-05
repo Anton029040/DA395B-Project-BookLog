@@ -9,6 +9,10 @@ import "./FilterSidebar.css";
  * This type definition ensures that the component receives the correct props and helps with type checking and autocompletion in TypeScript.
  */
 type FilterSidebarReturn = {
+    loadingBooks: boolean;                                              // GUI related message display for user info
+    bookError: string;                                                  // GUI related message display for user info
+    booksCount: number;                                                 // GUI related message display for user info
+
     availableAuthors: string[];                                         // all author names ie. ["J.R.R. Tolkien", "J.K. Rowling"]
     availableGenres: string[];                                          // all available genres
 
@@ -48,6 +52,11 @@ type FilterSidebarReturn = {
  * Note: This component is designed to be used within a larger application, such as a book listing page, where it interacts with the parent component (HomePage) to manage the state of the filters and update the displayed books accordingly.
  */
 const FilterSidebar = ({
+    // display messages:
+    loadingBooks,
+    bookError,
+    booksCount,
+
     // parameters:
     availableAuthors,
     availableGenres,
@@ -79,6 +88,12 @@ const FilterSidebar = ({
     return (
         <div className = "filter-sidebar"> {/* used for sidebars/secondary content */}
             <h2>Filters</h2>
+            {loadingBooks && <p>Loading books...</p>}
+
+            {!loadingBooks && bookError && ( <p role="alert">{bookError}</p> )}
+
+            {!loadingBooks && !bookError && ( <p>{booksCount} books found.</p> )}
+
             <Accordion alwaysOpen>                                  {/* bootstrap accordian, allows multiple sections to be open simultaneously */}
 
                 {/* ============= Authors ============= */}

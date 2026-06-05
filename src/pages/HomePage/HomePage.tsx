@@ -184,8 +184,13 @@ const HomePage = () => {
     return(
         <Container fluid className="home-page">
             <Row>
-                <Col xs = {12} md = {2}>
+                <Col>
+                    
                     <FilterSidebar
+                        loadingBooks = {loadingBooks}
+                        bookError = {bookError}
+                        booksCount = {books.length}
+
                         availableAuthors = {availableAuthors}
                         availableGenres = {availableGenres}
 
@@ -214,14 +219,9 @@ const HomePage = () => {
                 </Col>
 
                 <Col xs = {12} md = {10}>
-                    {loadingBooks && <p>Loading books...</p>}
-                    {!loadingBooks && bookError && (<p role = "alert">{bookError}</p>)}
-                    {!loadingBooks && !bookError && (<p>{books.length} books found.</p>)}
-
                     <div className="home-page__gallery">
                         <BookGallery books={books} />
                     </div>
-
                 </Col>
                 
             </Row>
