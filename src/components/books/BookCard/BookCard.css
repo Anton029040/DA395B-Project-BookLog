@@ -91,3 +91,13 @@
     font-size: 1.25rem;
     line-height: 1;
 }
+
+@media (max-width: 200px) {
+    .book-card {
+        width: 130px;
+    }
+
+    .book-card.card {
+        width: 130px;
+    }
+}
