@@ -1,6 +1,5 @@
 
 .home-page {
-    max-width: 1300px;
     margin: 0 auto;
 }
 
@@ -8,7 +7,6 @@
     display: grid;
     grid-template-columns: 220px minmax(0, auto);
     gap: 1rem;
-    justify-content: center;
     margin-right: 0;
     margin-left: 0;
 }
@@ -39,19 +37,12 @@
 }
 
 @media screen and (max-width: 900px) {
-    .home-page {
-        max-width: 700px;
-    }
-
     .home-page > .row {
         grid-template-columns: 170px minmax(0, auto);
     }
 }
 
 @media screen and (max-width: 500px) {
-    .home-page {
-        max-width: 500px;
-    }
 
     .home-page > .row {
         grid-template-columns: 1fr;
