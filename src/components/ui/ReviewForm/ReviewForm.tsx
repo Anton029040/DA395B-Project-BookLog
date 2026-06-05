@@ -2,17 +2,38 @@ import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
-import "./ReviewForm.css";
+
 import type { BookReview } from '../../../types/BookReview';
 import { getRating, getReview, removeReview, saveReview } from '../../../hooks/useLocalStorage';
 
+import "./ReviewForm.css";
+
+/**
+ * Props for the ReviewForm component.
+ * @description The ReviewForm component is used for submitting a review and rating for a book. 
+ *              It takes a book as a prop and displays the existing review and rating if they exist. 
+ *              The user can then edit the review and rating and submit it. The review and rating are 
+ *              saved to local storage using the saveReview function. The user can also clear the review 
+ *              and rating using the clearReview function, which removes them from local storage.
+ * 
+ * @param book - The book for which to submit a review.
+ * @returns ReviewForm component
+ */
 type ReviewFormProps = {
     book : BookReview;
 };
 
-/* Component that contains the input fields of a review. Contains a textarea for writing a review / seeing an old one.
-   Also contains a dropdown menu where user can pick between 1-5 stars to give a book. There is also a submit button
-*/
+/**
+ * Component for submitting a review and rating for a book. It takes a book as a prop and displays the existing review and rating if they exist.
+ * The user can then edit the review and rating and submit it. The review and rating are saved to local storage using the saveReview function. 
+ * The user can also clear the review and rating using the clearReview function, which removes them from local storage.
+ * 
+ * @param book - The book for which to submit a review.
+ * @returns ReviewForm component
+ * @description The ReviewForm component is used for submitting a review and rating for a book. 
+ *              It takes a book as a prop and displays the existing review and rating if they exist. 
+ *              The user can then edit the review and rating and submit it. The review and rating are 
+ */
 const ReviewForm = ({ book }: ReviewFormProps) => {
     const [review, setReview] = useState("");
     const [rating, setRating] = useState("0");
@@ -24,7 +45,7 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
         }
     }, [book.id]);
 
-    /* Function for doing controls before a book review is saved */
+    /* control flag before a book review is saved */
     function onSubmit() {
         console.log(rating);
         if (!rating || rating === "0") {
@@ -85,6 +106,6 @@ const ReviewForm = ({ book }: ReviewFormProps) => {
             > Remove review and rating</Button>
         </Form>
     )
-}
+};
 
 export default ReviewForm;

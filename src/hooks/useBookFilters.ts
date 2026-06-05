@@ -1,42 +1,56 @@
 import { useState } from "react";
 
-// re-useable logic for filtering books by the users selected filters 
-export const useBookFilters = () => {
 
-    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);                           // type = string array
+//Type definition for the return value of the useBookFilters hook, which includes the current filter states and functions to update them.
+type UseBookFiltersReturn = {
+    selectedAuthors: string[];
+    selectedGenres: string[];
+    selectedRating: number | undefined;
+    selectedEarliestPublishYear: number | undefined;
+    selectedLatestPublishYear: number | undefined;
+    setSelectedRating: React.Dispatch<React.SetStateAction<number | undefined>>;
+    setEarliestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>;
+    setLatestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>;
+    toggleAuthor: (author: string) => void;
+    toggleGenre: (genre: string) => void;
+    clearFilters: () => void;
+};
+
+/**
+ *  Custom hook that manages the state of book filters, including selected authors, genres, ratings, and publish years. 
+ * It provides functions to toggle filters and clear all filters.
+ * 
+ * @returns An object containing the current filter states and functions to update them.
+ */
+export const useBookFilters = (): UseBookFiltersReturn => {
+    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);                           // start = no authors selected = empty string array
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-    const [selectedRating, setSelectedRating] = useState<number | undefined>();                     // type = number or undefined
+    const [selectedRating, setSelectedRating] = useState<number | undefined>();                     // start = no rating selected = undefined
     const [selectedEarliestPublishYear, setEarliestPublishYear] = useState<number | undefined>();
     const [selectedLatestPublishYear, setLatestPublishYear] = useState<number | undefined>();
 
-    /* function to update the selected authors based on the users selected/deselected filters.
-
-        This is a simple toggle check: "is the author already in the "filter" array"?
-            true: yes they are -> then the user has previously selected this author from the filter list (toggled it on), 
-                therefore this new click (callback state change), means that they have deselected it (toggled off),
-                in that case, the user no longer wants that author as a part of the filter when searchinging for books.
-                => remove the author from the "filter" array.
-            false: no they are not -> then the user has selected this author from the filter list (toggled it on),
-                therefore this new click (callback state change), means theat they want the author added as a filter.
-                => add it to the "filter" array.
-
-        - filter() = new array with only items that pass the condition (immutable datatype)
-        - [...previousAuthors, author] = creates a new array and adds the author
-    */
+    /**
+     * Toggles the selection of an author in the filters.
+     * @param author The name of the author to toggle.
+     */
     const toggleAuthor = (author: string) => {      // accepts an author name as a string
         setSelectedAuthors((previousAuthors) => {   // updates state (async), using callback version of setState    // <- TESTING: REMOVE "{" LATER
-            const updatedAuthors =                      // <- TESTING: REMOVE LATER
+            const updatedAuthors =                   
                 previousAuthors.includes(author)    // is this author in our "filter" array?
                 ? previousAuthors.filter((item) =>  // true: "yes they have already added this author as a filter" then
                     (item !== author))              // remove the author from the "filter" array
                 : [...previousAuthors, author]      // false: add the author to the "filter" array
 
-            console.log("updated selected authors: ", updatedAuthors);  // <- TESTING: REMOVE LATER
-            return updatedAuthors;                                      // <- TESTING: REMOVE LATER
-        });                                                             // <- TESTING: REMOVE "}" LATER
+            console.log("updated selected authors: ", updatedAuthors);
+
+            return updatedAuthors;                                      
+        });                                                             
     };
 
-    // function to update(toggle) the selected genres based on the users selected/deselected filters.
+    /**
+     * Toggles the selection of a genre in the filters.
+     * @param genre The name of the genre to toggle.
+     */
     const toggleGenre = (genre: string) => {  
         setSelectedGenres((previousGenres) => previousGenres.includes(genre)    
             ? previousGenres.filter((item) => (item !== genre))              
@@ -44,7 +58,7 @@ export const useBookFilters = () => {
         );
     };
 
-    // function to clear all the users selected filters
+    // Function to clear all selected filters, resetting them to their initial states.
     const clearFilters = () => {
         setSelectedAuthors([]);
         setSelectedGenres([]);
@@ -53,7 +67,7 @@ export const useBookFilters = () => {
         setLatestPublishYear(undefined);
     };
 
-    // returning the filters as an object
+   // Return the current filter states and the functions to update them, which can be used in components that consume this hook.
     return {
         // the users currently selected filters:
         selectedAuthors,

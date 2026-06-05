@@ -1,9 +1,13 @@
 import SearchBar from "../../ui/SearchBar/SearchBar";
 import siteLogo from "../../../assets/images/book-logo.svg"; // needs to be imported otherwise the filepath doesn't work
+
 import "./Header.css";
 
 /**
- * Component for the header. Includes both a log and a Searchbar
+ * Component for the header. Includes both a log and a Searchbar. 
+ * The header is used on all pages of the app, so it is a good place to put the logo and the searchbar.
+ * 
+ * @returns Header component
  */
 const Header = () => {
     return(
