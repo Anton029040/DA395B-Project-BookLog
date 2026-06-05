@@ -1,10 +1,10 @@
 // This is the page connected to the endpoint "/tbr"
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import BookCard from "../components/books/BookCard/BookCard";
-import type { ApiBook } from "../types/ApiBook";
+import BookCard from "../../components/books/BookCard/BookCard";
+import type { ApiBook } from "../../types/ApiBook";
 import "./ReadPage.css";
-import { getBookReviews } from "../hooks/useLocalStorage";
+import { getBookReviews } from "../../hooks/useLocalStorage";
 
 // This is the page connected to the endpoint "/read"
 const ReadPage = () => {

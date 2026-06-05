@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-// adds a delay to a users input (changing value) before triggering api logic (to minimize api calls)
+/**
+ * Custom hook that introduces a delay before updating a value.
+ * @param value The value to debounce.
+ * @param delay The delay in milliseconds.
+ * @returns The debounced value.
+ */
 export const useDebounce = <T, >(value: T, delay = 300) => {
     const [delayValue, setDelayValue] = useState(value);
 

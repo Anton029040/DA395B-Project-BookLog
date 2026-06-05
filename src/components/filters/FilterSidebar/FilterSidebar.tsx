@@ -2,21 +2,17 @@ import { Accordion, Button, Form } from "react-bootstrap";
 
 import "./FilterSidebar.css";
 
-// ======== PROPS(properties) EXPECTED BY FilterSidebar ======== 
-// -> FilterSidebar does not fetch books itself!
-// -> displays author search results
-// -> displays genre, rating, publish year filters
-// -> calls toggle/set functions received from HomePage
-/*  props = data passed from one React component to another
-     think of it as "arguments to a function", beacuse react 
-     components are functions and props are "arguments". */
-// ============================================================= 
-interface FilterSidebarProps{
+/** 
+ * Type definition for the props passed to the FilterSidebar component. 
+ * It includes available authors and genres, current filter states, and functions to update those states.
+ * 
+ * This type definition ensures that the component receives the correct props and helps with type checking and autocompletion in TypeScript.
+ */
+type FilterSidebarReturn = {
     availableAuthors: string[];                                         // all author names ie. ["J.R.R. Tolkien", "J.K. Rowling"]
     availableGenres: string[];                                          // all available genres
 
-    // React.Dispatch = updates state
-    // React.SetStateAction = allows both values and callback functions
+    // React.Dispatch = updates state, React.SetStateAction = allows both values and callback functions
     authorSearch: string;                                               // current USER INPUT text in the author filter text field
     setAuthorSearch: React.Dispatch<React.SetStateAction<string>>;      // setting the author as the user input
     loadAuthors: boolean;                                               // loading state flag            
@@ -38,16 +34,19 @@ interface FilterSidebarProps{
     setLatestPublishYear: React.Dispatch<React.SetStateAction<number | undefined>>;   // set latest publish year filter
 
     clearFilters: () => void;                                           // reset/clear ALL the filters to default
-}
+};
 
-// =================== SIDEBAR COMPONENT FOR FILTERING BOOKS ===================
-// -> Author input field ONLY updates authorSearch 
-//      -> handled by useAvailableAuthors hook
-//          -> uses search-author endpoint ONLY.
-// -> checking/unchecking author checkbox calls toggleAuthor
-//      -> updates selectedAuthors in HomePage
-//          -> selectedAuthors are then sent to search-books endpoint as filters
-// =============================================================================
+/**
+ * A React component that renders a sidebar with various filters for books, including author search, 
+ * genre selection, rating selection, and publish year range.
+ * The component uses Bootstrap's Accordion for collapsible filter sections and Form components for user input.
+ * It also handles loading states and error messages for the author filter, as well as infinite scrolling for the author list.
+ * 
+ * @param {FilterSidebarReturn} props - The properties passed to the FilterSidebar component, including available authors and genres, current filter states, and functions to update those states.
+ * @returns {JSX.Element} The rendered FilterSidebar component.
+ * 
+ * Note: This component is designed to be used within a larger application, such as a book listing page, where it interacts with the parent component (HomePage) to manage the state of the filters and update the displayed books accordingly.
+ */
 const FilterSidebar = ({
     // parameters:
     availableAuthors,
@@ -75,7 +74,7 @@ const FilterSidebar = ({
 
     clearFilters,
 
-}: FilterSidebarProps) => {     // <- end of parameters & start of component
+}: FilterSidebarReturn) => {     // <- end of parameters & start of component
 
     return (
         <div className = "filter-sidebar"> {/* used for sidebars/secondary content */}
@@ -150,12 +149,12 @@ const FilterSidebar = ({
                 <Accordion.Item eventKey="2">
                     <Accordion.Header>Minimum Rating</Accordion.Header>
                     <Accordion.Body>
-                        {[1, 2, 3, 4, 5].map((rating) => (
+                        {[5, 4, 3, 2, 1].map((rating) => (
                             <Form.Check
                                 key = {rating}                                  
                                 type = "checkbox" 
                                 id = {`rating-${rating}`}                              
-                                label = {`${rating} star${rating > 1 ? "s" : ""}`}                                
+                                label = {"⭐".repeat(rating)}                                
                                 checked = {selectedRating === rating}   
                                 onChange = {() => setSelectedRating(
                                     selectedRating === rating ? undefined : rating)
@@ -209,5 +208,4 @@ const FilterSidebar = ({
         </div>
     );
 };
-
 export default FilterSidebar;

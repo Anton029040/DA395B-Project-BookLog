@@ -1,14 +1,22 @@
 import { useParams } from "react-router-dom";
-import "./BookDetailsPage.css"
-import ReviewForm from "../components/ui/ReviewForm/ReviewForm";
-import ImageCarousel from "../components/ui/Carousel/ImageCarousel";
-import BookDetails from "../components/books/BookDetails/BookDetails";
-import { useEffect, useState } from "react";
-import { searchBook, searchSimilarBooks } from "../api/bigBookApi";
-import type { SimilarBook } from "../types/SimilarBook";
-import type { BookReview } from "../types/BookReview";
 
-// This is the page connected to the endpoint "/books/:bookId"
+import ReviewForm from "../../components/ui/ReviewForm/ReviewForm";
+import ImageCarousel from "../../components/ui/Carousel/ImageCarousel";
+import BookDetails from "../../components/books/BookDetails/BookDetails";
+import { useEffect, useState } from "react";
+import { searchBook, searchSimilarBooks } from "../../api/bigBookApi";
+import type { SimilarBook } from "../../types/SimilarBook";
+import type { BookReview } from "../../types/BookReview";
+
+import "./BookDetailsPage.css"
+
+
+/**
+ * Component for displaying details of a specific book.
+ * This component fetches the book details and similar books based on the book ID from the URL parameters.
+ * This is the page connected to the endpoint "/books/:bookId"
+ * @returns The book details page.
+ */
 const BookDetailsPage = () => {
     const { bookId } = useParams();
     const [ similarBooks, setSimilarBooks ] = useState<SimilarBook[]>([]);
