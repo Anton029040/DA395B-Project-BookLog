@@ -1,29 +1,50 @@
 .filter-sidebar {
     width: 100%;
     max-width: 300px;
-    padding: 8px 10px;
+    height: 100%;
+    padding: 1rem;
+
+    display:flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+
+    background-color: #FEFAE0;
+    border-right: 1px solid #D4A373;
 }
 
 .filter-sidebar h2 {
     color: #1c1c1c;
-    margin-bottom: 8px;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-/* Bootstrap accordion colour override */
+/* Bootstrap accordion */
+.filter-sidebar .accordion,
+.filter-sidebar .accordion-item,
+.filter-sidebar .accordion-button,
+.filter-sidebar .accordion-body {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .filter-sidebar .accordion {
     border-radius: 8px;
-    overflow: hidden;
 }
 
 .filter-sidebar .accordion-item {
-    border-color: #D4A373;
-    background-color: #FEFAE0;
+    border: 1px solid #CCD5AE;
+    
+    overflow: hidden;
 }
 
 .filter-sidebar .accordion-button {
-    background-color: #FEFAE0;
+    background-color: #FAEDCD;    
     color: #1c1c1c;
     font-weight: 500;
+    width: 100%;
+    box-shadow: none;
 }
 
 .filter-sidebar .accordion-button:not(.collapsed) {
@@ -33,32 +54,41 @@
 }
 
 .filter-sidebar .accordion-button:focus {
-    box-shadow: 0 0 0 2px #CCD5AE;
+    box-shadow: none;
     border-color: #CCD5AE;
 }
 
 .filter-sidebar .accordion-body {
     background-color: #FEFAE0;
+    overflow-x: hidden;
 }
 
 .author-filter-list,
 .genre-filter-list {
     max-height: 300px;
     overflow-y: auto;
-    padding-right: 8px;
+    overflow-x: hidden;
+    padding-right: 0.5rem;
+    min-width: 0;
 }
 
-.genre-filter-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.filter-sidebar .form-check-label {
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
-/* Medium screens */
-@media screen and (max-width: 900px) {
+.filter-sidebar button {
+    width: 100%;
 }
 
-/* Small screens */
 @media screen and (max-width: 500px) {
-  
+    .filter-sidebar {
+        max-width: 100%;
+    }
+
+    .author-filter-list,
+    .genre-filter-list {
+        max-height: 180px;
+    }
+
 }

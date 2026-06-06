@@ -1,6 +1,7 @@
 .book-card {
     display: flex;
     flex-direction: column;
+    
     width: 180px;
     height: 350px;
     overflow: hidden;
